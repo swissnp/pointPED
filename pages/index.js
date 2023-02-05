@@ -1,12 +1,60 @@
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "@next/font/google";
-import styles from "@/styles/Home.module.css";
-import { Menu, Transition } from "@headlessui/react";
+import NavBar from "@/components/NavBar";
+import { useState, useRef } from "react";
+import {getP50weight,adjustedWeight}  from "@/components/calculation";
 import MultiSelectSearchBox from "@/components/multiSelectSearchBox";
-const inter = Inter({ subsets: ["latin"] });
+import SexSelectBox from "@/components/sexSelectBox";
+// import drug from "@/components/data";
+const calculateWeight = (w, h, s) => {
+  if (w > 0) {
+    if (w>1.2*getP50weight(h, s)){
+      console.log("overweight");
+      let TBW = w;
+      let IBW = getP50weight(h, s);
+      let ABW = adjustedWeight(w, h);
+      console.log(TBW, IBW, ABW);
+      return [TBW, IBW, ABW]
+    }else{
+      console.log("normal weight");
+      return w;
+    }
+  } else {
+    getP50weight(h, s);
+    return getP50weight(h, s);
+  }
+}
+
+
 
 export default function Home() {
+  const [weight, setWeight] = useState(0);
+  const [height, setHeight] = useState(0);
+  const [drug, setDrug] = useState([]);
+  const [sex, setSex] = useState('')
+  var handleChange = (selectedOption) => {
+    console.log(selectedOption);
+    setDrug(selectedOption.value);
+  };
+  const calculate_drug = () => {
+    let calculatedWeight = calculateWeight(weight,height,sex)
+    if (calculatedWeight.length>1){
+      let TBW = calculatedWeight[0];
+      let IBW = calculatedWeight[1];
+      let ABW = calculatedWeight[2];
+    }
+    else {
+      let TBW = calculatedWeight;
+    }
+  };
+  const validateWeight = (weight) => {
+    if (weight < 0) {
+      return false;
+    } else if (weight==='' || weight===null || weight===undefined || weight===0) {
+      return true;
+    }
+    
+    return true;
+  }
   return (
     <>
       <Head>
@@ -16,54 +64,49 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div className="bg-base-200 min-h-screen">
-          <div className="navbar bg-base-100 drop-shadow ">
-            <div className="navbar-start">
-             
-              <a className="btn btn-ghost normal-case text-xl text-primary">Point<div className="text-base-content">PED</div></a>
-            </div>
-            <div className="navbar-center hidden lg:flex">
-              
-            </div> 
-            <div className="navbar-end">
-              <a className="btn btn-accent">Get started</a>
-            </div>
-          </div>{" "}
-          {/* navbar */}
-          
+        <div className="min-h-screen bg-base-200">
+          <NavBar />
           <div className="mx-3 my-5">
-            <div className="container max-w-screen-md mx-auto bg-base-100 text-base-content rounded-lg p-2 drop-shadow-md">
-            <div className="prose-lg lg:prose-xl text-center p-3 font-bold">
-              <h1>Select Drug</h1>
-            </div>
-            
-              <div className="form-control w-auto px-4">
-              <MultiSelectSearchBox/>
+            <div className="container mx-auto max-w-screen-md rounded-lg bg-base-100 px-6 py-2 text-base-content drop-shadow-md">
+              <div className="prose-lg p-3 text-center font-bold lg:prose-xl">
+                <h1>Select Drug</h1>
+              </div>
+              <p className="text-center text-error">
+                demo version don't use in real setting
+              </p>
+              <MultiSelectSearchBox onChange ={handleChange} />
+              <div className="form-control w-auto ">
                 <label className="label">
-                  <span className="label-text">What is your name?</span>
+                  <span className="label-text">Weight (kg)</span>
+                  {validateWeight(weight)
+                  ? <span className="label-text-alt"></span>
+                  : <span className="label-text-alt text-error">Weight must be less than 1000</span>}
                 </label>
                 <input
-                  type="text"
+                  type="number"
+                  // ref={weightRef}
                   placeholder="Type here"
-                  className="input input-bordered w-full "
+                  className={` input-bordered input w-full ${!(validateWeight(weight)) && "input-error"} `}
+                  onChange={(e) => {setWeight(e.target.value)}}
                 />
-                <label className="label">
-                </label>
+                
               </div>
-              <div className="form-control w-auto px-4">
+              <div className="form-control w-auto ">
                 <label className="label">
-                  <span className="label-text">What is your name?</span>
+                  <span className="label-text">Height (cm)</span>
                 </label>
                 <input
-                  type="text"
+                  type="number"
+                  // ref={heightRef}
                   placeholder="Type here"
-                  className="input input-bordered  w-full "
+                  className="input-bordered input  w-full "
+                  onChange={(e) => {setHeight(e.target.value)}}
                 />
-                <label className="label">
-                </label>
+                <label className="label"></label>
               </div>
-              <div className=" flex items-center justify-center gap-x-6">
-                <button className="btn btn-primary">Button</button>
+              <SexSelectBox onChange={(e) => setSex(e.label)}/>
+              <div className=" flex items-center justify-center gap-x-6 pt-3">
+                <button className="btn-primary btn" onClick={calculate_drug}>Button</button>
               </div>
             </div>
           </div>

@@ -2,18 +2,21 @@ import React from "react";
 
 import Select from "react-select";
 import { drug } from "./data";
+import makeAnimated from 'react-select/animated';
 
-const MultiSelectSearchBox = () => (
+const animatedComponents = makeAnimated();
+
+const MultiSelectSearchBox = (props) => (
   <Select
-    defaultValue={[drug[2], drug[3]]}
     isMulti
-    name="colors"
+    name="drugs"
     options={drug}
+    closeMenuOnSelect={false}
+    components={animatedComponents}
     className="basic-multi-select"
     classNames={{ 
-    // menuList: () => "text-neutral-content" ,
-    // menu: () => "text-neutral-content" ,
-    option: () => "text-black" ,}}
+    option: () => "text-black",}}
+    onChange={props.onChange}
     classNamePrefix="select"
   />
 );
