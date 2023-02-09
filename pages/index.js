@@ -89,6 +89,9 @@ export default function Home() {
               <p className="text-center text-error">
                 demo version don't use in real setting
               </p>
+              <label className="label">
+                  <span className="label-text">Drugs</span>
+              </label>
               <MultiSelectSearchBox onChange ={e => handleChange(e)} />
               <div className="form-control w-auto ">
                 <label className="label">
@@ -104,7 +107,8 @@ export default function Home() {
                   className={` input-bordered input w-full ${!(isWeightValid) && "input-error"} `}
                   pattern="[0-9]*"
                   value={weight}
-                  inputProps={{ inputMode: 'decimal' }}
+                  // inputProps={{ inputMode: 'decimal' }}
+                  inputmode="decimal"
                   onChange={(e) =>
                     setWeight((weight) => (e.target.validity.valid ? e.target.value : weight))}
                 />
@@ -123,11 +127,15 @@ export default function Home() {
                   className={` input-bordered input w-full ${!(isHeightValid) && "input-error"} `}
                   pattern="[0-9]*"
                   value={height}
-                  inputProps={{ inputMode: 'decimal' }}
+                  // inputProps={{ inputMode: 'decimal' }}
+                  inputmode="decimal"
                   onChange={(e) =>
                     setHeight((height) => (e.target.validity.valid ? e.target.value : height))}
                 />
               </div>
+              <label className="label">
+                  <span className="label-text">Select Sex</span>
+              </label>
               <SexSelectBox onChange={(e) => setSex(e.label)}/>
               <div className=" flex items-center justify-center gap-x-6 pt-3">
                 <button className="btn-primary btn" onClick={e=>console.log('g')}>Button</button>
