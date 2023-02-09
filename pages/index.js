@@ -1,10 +1,11 @@
 import Head from "next/head";
 import NavBar from "@/components/NavBar";
-import { useState, useRef } from "react";
+import { useState, useRef, use } from "react";
 import {getP50weight,adjustedWeight}  from "@/components/calculation";
-import MultiSelectSearchBox from "@/components/multiSelectSearchBox";
-import SexSelectBox from "@/components/sexSelectBox";
-// import drug from "@/components/data";
+import MultiSelectSearchBox from "@/components/MultiSelectSearchBox";
+import SexSelectBox from "@/components/SexSelectBox";
+import drug from "@/components/data";
+
 const calculateWeight = (w, h, s) => {
   if (w > 0) {
     if (w>1.2*getP50weight(h, s)){
@@ -24,37 +25,51 @@ const calculateWeight = (w, h, s) => {
   }
 }
 
+const validateWeight = (weight) => {
+  if ((weight >= 0 || weight === '' || (/^[0-9\b]+$/.test(e.target.value))) & (weight <= 500)) {
+  return true;
+  } 
+  return false;
+}
 
+const validateHeight = (weight) => {
+  if ((weight >= 0 || weight === '' || (/^[0-9\b]+$/.test(e.target.value))) & (weight <= 300)) {
+  return true;
+  } 
+  return false;
+}
+
+const calculate_drug = (weight, height, sex, selectedDrug) => {
+  console.log(selectedDrug)
+  let calculatedWeight = calculateWeight(weight,height,sex)
+  if (calculatedWeight.length>1){
+    let TBW = calculatedWeight[0];
+    let IBW = calculatedWeight[1];
+    let ABW = calculatedWeight[2];
+  }
+  else {
+    for (let i = 0; i < selectedDrug.length; i++) {
+      dose = selectedDrug[i].coef * calculatedWeight;
+      console.log(dose, selectedDrug[i].label)
+    }
+}
+};
 
 export default function Home() {
-  const [weight, setWeight] = useState(0);
-  const [height, setHeight] = useState(0);
-  const [drug, setDrug] = useState([]);
-  const [sex, setSex] = useState('')
-  var handleChange = (selectedOption) => {
-    console.log(selectedOption);
-    setDrug(selectedOption.value);
+  const [weight, setWeight] = useState('');
+  const [height, setHeight] = useState('');
+  const [selectedDrug, setSelectedDrug] = useState([]);
+  const [sex, setSex] = useState('');
+  let isWeightValid = useRef(true);
+  let isHeightValid = useRef(true);
+
+  isWeightValid = validateWeight(weight);
+  isHeightValid = validateHeight(height);
+  
+  let handleChange = (selectedOption) => {
+    setSelectedDrug(selectedOption);
   };
-  const calculate_drug = () => {
-    let calculatedWeight = calculateWeight(weight,height,sex)
-    if (calculatedWeight.length>1){
-      let TBW = calculatedWeight[0];
-      let IBW = calculatedWeight[1];
-      let ABW = calculatedWeight[2];
-    }
-    else {
-      let TBW = calculatedWeight;
-    }
-  };
-  const validateWeight = (weight) => {
-    if (weight < 0) {
-      return false;
-    } else if (weight==='' || weight===null || weight===undefined || weight===0) {
-      return true;
-    }
-    
-    return true;
-  }
+  
   return (
     <>
       <Head>
@@ -74,39 +89,48 @@ export default function Home() {
               <p className="text-center text-error">
                 demo version don't use in real setting
               </p>
-              <MultiSelectSearchBox onChange ={handleChange} />
+              <MultiSelectSearchBox onChange ={e => handleChange(e)} />
               <div className="form-control w-auto ">
                 <label className="label">
                   <span className="label-text">Weight (kg)</span>
-                  {validateWeight(weight)
+                  {isWeightValid
                   ? <span className="label-text-alt"></span>
-                  : <span className="label-text-alt text-error">Weight must be less than 1000</span>}
+                  : <span className="label-text-alt text-error">Weight is invalid</span>}
                 </label>
                 <input
                   type="number"
                   // ref={weightRef}
                   placeholder="Type here"
-                  className={` input-bordered input w-full ${!(validateWeight(weight)) && "input-error"} `}
-                  onChange={(e) => {setWeight(e.target.value)}}
+                  className={` input-bordered input w-full ${!(isWeightValid) && "input-error"} `}
+                  pattern="[0-9]*"
+                  value={weight}
+                  inputProps={{ inputMode: 'numeric' }}
+                  onChange={(e) =>
+                    setWeight((weight) => (e.target.validity.valid ? e.target.value : weight))}
                 />
-                
               </div>
               <div className="form-control w-auto ">
                 <label className="label">
-                  <span className="label-text">Height (cm)</span>
+                  <span className="label-text">Height (kg)</span>
+                  {isHeightValid
+                  ? <span className="label-text-alt"></span>
+                  : <span className="label-text-alt text-error">Height is invalid</span>}
                 </label>
                 <input
                   type="number"
-                  // ref={heightRef}
+                  // ref={weightRef}
                   placeholder="Type here"
-                  className="input-bordered input  w-full "
-                  onChange={(e) => {setHeight(e.target.value)}}
+                  className={` input-bordered input w-full ${!(isHeightValid) && "input-error"} `}
+                  pattern="[0-9]*"
+                  value={height}
+                  inputProps={{ inputMode: 'numeric' }}
+                  onChange={(e) =>
+                    setHeight((height) => (e.target.validity.valid ? e.target.value : height))}
                 />
-                <label className="label"></label>
               </div>
               <SexSelectBox onChange={(e) => setSex(e.label)}/>
               <div className=" flex items-center justify-center gap-x-6 pt-3">
-                <button className="btn-primary btn" onClick={calculate_drug}>Button</button>
+                <button className="btn-primary btn" onClick={e=>console.log('g')}>Button</button>
               </div>
             </div>
           </div>
