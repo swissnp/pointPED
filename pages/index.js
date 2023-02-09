@@ -1,28 +1,10 @@
 import Head from "next/head";
 import NavBar from "@/components/NavBar";
 import { useState, useRef, use } from "react";
-import { getP50weight, adjustedWeight } from "@/components/calculation";
+import { calculateWeight } from "@/components/calculation";
 import MultiSelectSearchBox from "@/components/MultiSelectSearchBox";
 import SexSelectBox from "@/components/SexSelectBox";
-import drug from "@/components/data";
 import RenderComponent from "@/components/RenderDrug";
-// const calculateWeight = (w, h, s) => {
-//   if (w > 0) {
-//     if (w > 1.2 * getP50weight(h, s)) {
-//       console.log("overweight");
-//       let TBW = w;
-//       let IBW = getP50weight(h, s);
-//       let ABW = adjustedWeight(w, h);
-//       console.log(TBW, IBW, ABW);
-//       return [TBW, IBW, ABW];
-//     } else {
-//       console.log("normal weight");
-//       return w;
-//     }
-//   } else {
-//     return getP50weight(h, s);
-//   }
-// };
 
 const validateWeight = (weight) => {
   if (
@@ -49,17 +31,27 @@ export default function Home() {
   const [height, setHeight] = useState("");
   const [selectedDrug, setSelectedDrug] = useState([]);
   const [sex, setSex] = useState("");
-  let isWeightValid = useRef(true);
-  let isHeightValid = useRef(true);
   const [isModelOpen, setIsModelOpen] = useState(false);
+  const isWeightValid = useRef(true);
+  const isHeightValid = useRef(true);
+  const calculatedWeight = useRef(0);
+  const isObese = useRef(false);
 
-  isWeightValid = validateWeight(weight);
-  isHeightValid = validateHeight(height);
+  isWeightValid.current = validateWeight(weight);
+  isHeightValid.current = validateHeight(height);
+
+  if (isModelOpen) {
+    calculatedWeight.current = calculateWeight(weight, height, sex);
+    if (typeof calculatedWeight.current === "object") {
+      isObese.current = true;
+    } else {
+      isObese.current = false;
+    }
+  }
 
   let handleChange = (selectedOption) => {
     setSelectedDrug(selectedOption);
   };
-
   return (
     <>
       <Head>
@@ -81,20 +73,28 @@ export default function Home() {
           >
             ✕
           </label>
-          <div className="overflow-x-auto">
-            <table className="table-zebra table w-full">
+          <div className=" flex max-h-screen items-center justify-center gap-x-6 pb-1"></div>
+          <div className="overflow-x-auto pt-4 shadow-sm">
+            <table className="table-zebra table-compact w-full">
               <thead>
                 <tr>
-                  <th>Drugs</th>
+                  <th>
+                    Drugs{" "}
+                    {isObese.current ? (
+                      <div className="badge-error badge ml-1 gap-1">Obese</div>
+                    ) : (
+                      <div className="badge-success badge ml-1 gap-1">
+                        Not Obese
+                      </div>
+                    )}
+                  </th>
                   <th>Dose</th>
                 </tr>
               </thead>
               {isModelOpen && (
                 <RenderComponent
                   selectedDrug={selectedDrug}
-                  weight={weight}
-                  height={height}
-                  sex={sex}
+                  calculatedWeight={calculatedWeight.current}
                 />
               )}
             </table>
@@ -102,7 +102,7 @@ export default function Home() {
         </div>
       </div>
       <main>
-        <div className="min-h-screen bg-base-200 overflow-auto">
+        <div className="min-h-screen overflow-auto bg-base-200">
           <NavBar />
           <div className="mx-3 my-5">
             <div className="container mx-auto max-w-screen-md rounded-lg bg-base-100 px-6 py-2 text-base-content drop-shadow-md">
@@ -119,7 +119,7 @@ export default function Home() {
               <div className="form-control w-auto ">
                 <label className="label">
                   <span className="label-text">Weight (kg)</span>
-                  {isWeightValid ? (
+                  {isWeightValid.current ? (
                     <span className="label-text-alt"></span>
                   ) : (
                     <span className="label-text-alt text-error">
@@ -131,7 +131,7 @@ export default function Home() {
                   type="number"
                   placeholder="Type here"
                   className={` input-bordered input w-full ${
-                    !isWeightValid && "input-error"
+                    !isWeightValid.current && "input-error"
                   } `}
                   pattern="/^\d*\.?\d*$/"
                   inputMode="decimal"
@@ -145,7 +145,7 @@ export default function Home() {
               <div className="form-control w-auto ">
                 <label className="label">
                   <span className="label-text">Height (cm)</span>
-                  {isHeightValid ? (
+                  {isHeightValid.current ? (
                     <span className="label-text-alt"></span>
                   ) : (
                     <span className="label-text-alt text-error">
@@ -157,7 +157,7 @@ export default function Home() {
                   type="number"
                   placeholder="Type here"
                   className={` input-bordered input w-full ${
-                    !isHeightValid && "input-error"
+                    !isHeightValid.current && "input-error"
                   } `}
                   pattern="/\d+\.?\d*/"
                   inputMode="decimal"
@@ -176,7 +176,7 @@ export default function Home() {
                 <label
                   onClick={(e) => {
                     setIsModelOpen(true);
-                    console.log(weight,height)
+                    console.log(weight, height);
                   }}
                   htmlFor="my-modal-3"
                   className="btn"

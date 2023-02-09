@@ -2,12 +2,10 @@ import { calculateWeight } from "./calculation";
 
 export default function RenderComponent(props) {
   const selectedDrug = props.selectedDrug;
-  const weight = props.weight;
-  const height = props.height;
-  const sex = props.sex;
-  let calculatedWeight = calculateWeight(weight, height, sex);
+  const calculatedWeight = props.calculatedWeight;
+//   let calculatedWeight = calculateWeight(weight, height, sex);
   let list = [];
-
+    console.log(calculatedWeight);
   for (let i = 0; i < selectedDrug.length; i++) {
     let dose = selectedDrug[i].coef * calculatedWeight;
     let isMax = false;
