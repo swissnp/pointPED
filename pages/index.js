@@ -88,13 +88,14 @@ export default function Home() {
 
               <div className="stat place-items-center">
                 <div className="stat-title">Height</div>
-                <div className="stat-value text-secondary">{height}</div>
+                <div className="stat-value">{height}</div>
                 {/* <div className="stat-desc text-secondary">↗︎ 40 (2%)</div> */}
               </div>
 
               <div className="stat place-items-center">
                 <div className="stat-title">Sex</div>
-                <div className="stat-value">{sex}</div>
+                {sex.label === 'Female'&&<img className="w-11 h-11" src = './female.svg'></img> }
+                {sex.label === 'Male'&&<img className="w-11 h-11" src = './male.svg'></img> }
                 {/* <div className="stat-desc"></div> */}
               </div>
             </div>
@@ -197,12 +198,12 @@ export default function Home() {
               <label className="label">
                 <span className="label-text">Select Sex</span>
               </label>
-              <SexSelectBox onChange={(e) => setSex(e.label)} />
+              <SexSelectBox onChange={(e) => setSex(e)} />
               <div className=" flex items-center justify-center gap-x-6 py-2 pt-3">
                 <label
                   onClick={(e) => {
                     setIsModalOpen(true);
-                    console.log(weight, height);
+                    console.log(weight, height, sex);
                   }}
                   // htmlFor="my-modal-3"
                   className="btn-primary btn"
