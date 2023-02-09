@@ -61,7 +61,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.webmanifest"></link>
       </Head>
-      <input type="checkbox" id="my-modal-3" className={'modal-toggle'} checked={isModalOpen}/>
+      <input
+        type="checkbox"
+        id="my-modal-3"
+        className={"modal-toggle"}
+        checked={isModalOpen}
+      />
       <div className="modal text-base-content">
         <div className="modal-box w-11/12 max-w-5xl">
           <label
@@ -73,8 +78,29 @@ export default function Home() {
           >
             ✕
           </label>
-          <div className=" flex max-h-screen items-center justify-center gap-x-6 pb-1"></div>
-          <div className="overflow-x-auto pt-4 shadow-sm">
+          <div className="flex max-h-screen items-center justify-center gap-x-6 pb-1">
+            <div className="stats max-w-full shadow">
+              <div className="stat place-items-center">
+                <div className="stat-title">Weight</div>
+                <div className="stat-value">{weight}</div>
+                {/* <div className="stat-desc">From January 1st to February 1st</div> */}
+              </div>
+
+              <div className="stat place-items-center">
+                <div className="stat-title">Height</div>
+                <div className="stat-value text-secondary">{height}</div>
+                {/* <div className="stat-desc text-secondary">↗︎ 40 (2%)</div> */}
+              </div>
+
+              <div className="stat place-items-center">
+                <div className="stat-title">Sex</div>
+                <div className="stat-value">{sex}</div>
+                {/* <div className="stat-desc"></div> */}
+              </div>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto pt-2 shadow-sm">
             <table className="table-zebra table-compact w-full">
               <thead>
                 <tr>
@@ -172,14 +198,14 @@ export default function Home() {
                 <span className="label-text">Select Sex</span>
               </label>
               <SexSelectBox onChange={(e) => setSex(e.label)} />
-              <div className=" flex items-center justify-center gap-x-6 pt-3 py-2">
+              <div className=" flex items-center justify-center gap-x-6 py-2 pt-3">
                 <label
                   onClick={(e) => {
                     setIsModalOpen(true);
                     console.log(weight, height);
                   }}
                   // htmlFor="my-modal-3"
-                  className="btn btn-primary"
+                  className="btn-primary btn"
                 >
                   Calculate
                 </label>
