@@ -6,23 +6,23 @@ import MultiSelectSearchBox from "@/components/MultiSelectSearchBox";
 import SexSelectBox from "@/components/SexSelectBox";
 import drug from "@/components/data";
 import RenderComponent from "@/components/RenderDrug";
-const calculateWeight = (w, h, s) => {
-  if (w > 0) {
-    if (w > 1.2 * getP50weight(h, s)) {
-      console.log("overweight");
-      let TBW = w;
-      let IBW = getP50weight(h, s);
-      let ABW = adjustedWeight(w, h);
-      console.log(TBW, IBW, ABW);
-      return [TBW, IBW, ABW];
-    } else {
-      console.log("normal weight");
-      return w;
-    }
-  } else {
-    return getP50weight(h, s);
-  }
-};
+// const calculateWeight = (w, h, s) => {
+//   if (w > 0) {
+//     if (w > 1.2 * getP50weight(h, s)) {
+//       console.log("overweight");
+//       let TBW = w;
+//       let IBW = getP50weight(h, s);
+//       let ABW = adjustedWeight(w, h);
+//       console.log(TBW, IBW, ABW);
+//       return [TBW, IBW, ABW];
+//     } else {
+//       console.log("normal weight");
+//       return w;
+//     }
+//   } else {
+//     return getP50weight(h, s);
+//   }
+// };
 
 const validateWeight = (weight) => {
   if (
@@ -101,7 +101,7 @@ export default function Home() {
         </div>
       </div>
       <main>
-        <div className="min-h-screen bg-base-200">
+        <div className="min-h-screen bg-base-200 overflow-auto">
           <NavBar />
           <div className="mx-3 my-5">
             <div className="container mx-auto max-w-screen-md rounded-lg bg-base-100 px-6 py-2 text-base-content drop-shadow-md">

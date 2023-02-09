@@ -27,7 +27,7 @@ export default function RenderComponent(props) {
           {selectedDrug[i].label}{" "}
           {isMax && <div className="badge-error badge-outline badge">max</div>
           }
-          {isMin && <div className="badge-error badge-outline badge">min</div>}
+          {isMin && <div className="badge-info badge-outline badge">min</div>}
         </td>
         <td>
           {dose} {selectedDrug[i].unit}
