@@ -1,75 +1,65 @@
 import Head from "next/head";
 import NavBar from "@/components/NavBar";
 import { useState, useRef, use } from "react";
-import {getP50weight,adjustedWeight}  from "@/components/calculation";
+import { getP50weight, adjustedWeight } from "@/components/calculation";
 import MultiSelectSearchBox from "@/components/MultiSelectSearchBox";
 import SexSelectBox from "@/components/SexSelectBox";
 import drug from "@/components/data";
-
+import RenderComponent from "@/components/RenderDrug";
 const calculateWeight = (w, h, s) => {
   if (w > 0) {
-    if (w>1.2*getP50weight(h, s)){
+    if (w > 1.2 * getP50weight(h, s)) {
       console.log("overweight");
       let TBW = w;
       let IBW = getP50weight(h, s);
       let ABW = adjustedWeight(w, h);
       console.log(TBW, IBW, ABW);
-      return [TBW, IBW, ABW]
-    }else{
+      return [TBW, IBW, ABW];
+    } else {
       console.log("normal weight");
       return w;
     }
   } else {
-    getP50weight(h, s);
     return getP50weight(h, s);
   }
-}
+};
 
 const validateWeight = (weight) => {
-  if ((weight >= 0 || weight === '' || (/^[0-9\b]+$/.test(e.target.value))) & (weight <= 500)) {
-  return true;
-  } 
+  if (
+    (weight >= 0 || weight === "" || /^\d*\.?\d*$/.test(e.target.value)) &
+    (weight <= 500)
+  ) {
+    return true;
+  }
   return false;
-}
+};
 
 const validateHeight = (weight) => {
-  if ((weight >= 0 || weight === '' || (/^[0-9\b]+$/.test(e.target.value))) & (weight <= 300)) {
-  return true;
-  } 
-  return false;
-}
-
-const calculate_drug = (weight, height, sex, selectedDrug) => {
-  console.log(selectedDrug)
-  let calculatedWeight = calculateWeight(weight,height,sex)
-  if (calculatedWeight.length>1){
-    let TBW = calculatedWeight[0];
-    let IBW = calculatedWeight[1];
-    let ABW = calculatedWeight[2];
+  if (
+    (weight >= 0 || weight === "" || /^\d*\.?\d*$/.test(e.target.value)) &
+    (weight <= 300)
+  ) {
+    return true;
   }
-  else {
-    for (let i = 0; i < selectedDrug.length; i++) {
-      dose = selectedDrug[i].coef * calculatedWeight;
-      console.log(dose, selectedDrug[i].label)
-    }
-}
+  return false;
 };
 
 export default function Home() {
-  const [weight, setWeight] = useState('');
-  const [height, setHeight] = useState('');
+  const [weight, setWeight] = useState("");
+  const [height, setHeight] = useState("");
   const [selectedDrug, setSelectedDrug] = useState([]);
-  const [sex, setSex] = useState('');
+  const [sex, setSex] = useState("");
   let isWeightValid = useRef(true);
   let isHeightValid = useRef(true);
+  const [isModelOpen, setIsModelOpen] = useState(false);
 
   isWeightValid = validateWeight(weight);
   isHeightValid = validateHeight(height);
-  
+
   let handleChange = (selectedOption) => {
     setSelectedDrug(selectedOption);
   };
-  
+
   return (
     <>
       <Head>
@@ -78,6 +68,38 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+      <div className="modal text-base-content">
+        <div className="modal-box w-11/12 max-w-5xl">
+          <label
+            htmlFor="my-modal-3"
+            className="btn-sm btn-circle btn absolute right-2 top-2"
+            onClick={() => {
+              setIsModelOpen(false);
+            }}
+          >
+            ✕
+          </label>
+          <div className="overflow-x-auto">
+            <table className="table-zebra table w-full">
+              <thead>
+                <tr>
+                  <th>Drugs</th>
+                  <th>Dose</th>
+                </tr>
+              </thead>
+              {isModelOpen && (
+                <RenderComponent
+                  selectedDrug={selectedDrug}
+                  weight={weight}
+                  height={height}
+                  sex={sex}
+                />
+              )}
+            </table>
+          </div>
+        </div>
+      </div>
       <main>
         <div className="min-h-screen bg-base-200">
           <NavBar />
@@ -90,55 +112,76 @@ export default function Home() {
                 demo version don't use in real setting
               </p>
               <label className="label">
-                  <span className="label-text">Drugs</span>
+                <span className="label-text">Drugs</span>
               </label>
-              <MultiSelectSearchBox onChange ={e => handleChange(e)} />
+              <MultiSelectSearchBox onChange={(e) => handleChange(e)} />
               <div className="form-control w-auto ">
                 <label className="label">
                   <span className="label-text">Weight (kg)</span>
-                  {isWeightValid
-                  ? <span className="label-text-alt"></span>
-                  : <span className="label-text-alt text-error">Weight is invalid</span>}
+                  {isWeightValid ? (
+                    <span className="label-text-alt"></span>
+                  ) : (
+                    <span className="label-text-alt text-error">
+                      Weight is invalid
+                    </span>
+                  )}
                 </label>
                 <input
                   type="number"
-                  // ref={weightRef}
                   placeholder="Type here"
-                  className={` input-bordered input w-full ${!(isWeightValid) && "input-error"} `}
-                  pattern="[0-9]*"
-                  value={weight}
-                  // inputProps={{ inputMode: 'decimal' }}
-                  inputmode="decimal"
+                  className={` input-bordered input w-full ${
+                    !isWeightValid && "input-error"
+                  } `}
+                  pattern="/^\d*\.?\d*$/"
+                  inputMode="decimal"
                   onChange={(e) =>
-                    setWeight((weight) => (e.target.validity.valid ? e.target.value : weight))}
+                    setWeight((weight) =>
+                      e.target.validity.valid ? e.target.value : weight
+                    )
+                  }
                 />
               </div>
               <div className="form-control w-auto ">
                 <label className="label">
                   <span className="label-text">Height (cm)</span>
-                  {isHeightValid
-                  ? <span className="label-text-alt"></span>
-                  : <span className="label-text-alt text-error">Height is invalid</span>}
+                  {isHeightValid ? (
+                    <span className="label-text-alt"></span>
+                  ) : (
+                    <span className="label-text-alt text-error">
+                      Height is invalid
+                    </span>
+                  )}
                 </label>
                 <input
                   type="number"
-                  // ref={weightRef}
                   placeholder="Type here"
-                  className={` input-bordered input w-full ${!(isHeightValid) && "input-error"} `}
-                  pattern="[0-9]*"
-                  value={height}
-                  // inputProps={{ inputMode: 'decimal' }}
-                  inputmode="decimal"
+                  className={` input-bordered input w-full ${
+                    !isHeightValid && "input-error"
+                  } `}
+                  pattern="/\d+\.?\d*/"
+                  inputMode="decimal"
                   onChange={(e) =>
-                    setHeight((height) => (e.target.validity.valid ? e.target.value : height))}
+                    setHeight((height) =>
+                      e.target.validity.valid ? e.target.value : height
+                    )
+                  }
                 />
               </div>
               <label className="label">
-                  <span className="label-text">Select Sex</span>
+                <span className="label-text">Select Sex</span>
               </label>
-              <SexSelectBox onChange={(e) => setSex(e.label)}/>
+              <SexSelectBox onChange={(e) => setSex(e.label)} />
               <div className=" flex items-center justify-center gap-x-6 pt-3">
-                <button className="btn-primary btn" onClick={e=>console.log('g')}>Button</button>
+                <label
+                  onClick={(e) => {
+                    setIsModelOpen(true);
+                    console.log(weight,height)
+                  }}
+                  htmlFor="my-modal-3"
+                  className="btn"
+                >
+                  open modal
+                </label>
               </div>
             </div>
           </div>

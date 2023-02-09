@@ -3,7 +3,7 @@ export const drug = [
     value: "resuscitation",
     label: "Resuscitation",
     min: 0,
-    max: 100,
+    max: 1,
     coef: 1,
     unit: "ml",
   },
