@@ -104,14 +104,14 @@ export default function Home() {
                   className={` input-bordered input w-full ${!(isWeightValid) && "input-error"} `}
                   pattern="[0-9]*"
                   value={weight}
-                  inputProps={{ inputMode: 'numeric' }}
+                  inputProps={{ inputMode: 'decimal' }}
                   onChange={(e) =>
                     setWeight((weight) => (e.target.validity.valid ? e.target.value : weight))}
                 />
               </div>
               <div className="form-control w-auto ">
                 <label className="label">
-                  <span className="label-text">Height (kg)</span>
+                  <span className="label-text">Height (cm)</span>
                   {isHeightValid
                   ? <span className="label-text-alt"></span>
                   : <span className="label-text-alt text-error">Height is invalid</span>}
@@ -123,7 +123,7 @@ export default function Home() {
                   className={` input-bordered input w-full ${!(isHeightValid) && "input-error"} `}
                   pattern="[0-9]*"
                   value={height}
-                  inputProps={{ inputMode: 'numeric' }}
+                  inputProps={{ inputMode: 'decimal' }}
                   onChange={(e) =>
                     setHeight((height) => (e.target.validity.valid ? e.target.value : height))}
                 />
