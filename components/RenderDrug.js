@@ -1,16 +1,12 @@
-import { calculateWeight } from "./calculation";
-
 export default function RenderComponent(props) {
   const selectedDrug = props.selectedDrug;
   const calculatedWeight = props.calculatedWeight;
 //   let calculatedWeight = calculateWeight(weight, height, sex);
   let list = [];
-    console.log(calculatedWeight);
   for (let i = 0; i < selectedDrug.length; i++) {
     let dose = selectedDrug[i].coef * calculatedWeight;
     let isMax = false;
     let isMin = false;
-    console.log(dose);
     if (dose >= selectedDrug[i].max) {
       dose = selectedDrug[i].max;
       isMax = true;
@@ -20,11 +16,10 @@ export default function RenderComponent(props) {
     }
 
     list.push(
-      <tr>
+      <tr key={selectedDrug[i].value}>
         <td>
           {selectedDrug[i].label}{" "}
-          {isMax && <div className="badge-error badge-outline badge">max</div>
-          }
+          {isMax && <div className="badge-error badge-outline badge">max</div>}
           {isMin && <div className="badge-info badge-outline badge">min</div>}
         </td>
         <td>
