@@ -24,9 +24,12 @@ export function getP50weight(height, sex) {
     console.error(e);
   }
 }
-export function adjustedWeight(weight, height) {
-  return getP50weight(height) + 0.35 * (weight - getP50weight(height));
+
+export function adjustedWeight(weight, height, sex) {
+  let P50weight = getP50weight(height,sex);
+  return (P50weight + 0.35*(weight - P50weight));
 }
+
 function estimateDecimalHeight(height, data) {
   let ceil = data[Math.ceil(height * 2) / 2];
   let floor = data[Math.floor(height * 2) / 2];
@@ -39,7 +42,9 @@ function estimateDecimalHeight(height, data) {
   }
 }
 
-export const calculateWeight = (w, h, s) => {
+export const calculateWeight = (weight, height, s) => {
+  let w = parseFloat(weight);
+  let h = parseFloat(height);
   try {
     if (h > 0) {
       if (w > 0) {
@@ -47,7 +52,7 @@ export const calculateWeight = (w, h, s) => {
           console.log("overweight");
           let TBW = w;
           let IBW = getP50weight(h, s);
-          let ABW = adjustedWeight(w, h);
+          let ABW = adjustedWeight(w, h,s);
           return [TBW, IBW, ABW];
         } else {
           console.log("normal weight");

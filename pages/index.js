@@ -1,6 +1,6 @@
 import Head from "next/head";
 import NavBar from "@/components/NavBar";
-import { useState, useRef, use } from "react";
+import { useState, useRef} from "react";
 import { calculateWeight } from "@/components/calculation";
 import MultiSelectSearchBox from "@/components/MultiSelectSearchBox";
 import SexSelectBox from "@/components/SexSelectBox";
@@ -172,7 +172,7 @@ export default function Home() {
                 <div className="alert alert-error shadow-lg">
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                  <span>{formError}</span>
+                  <span >{formError}</span>
                 </div>
               </div>)
               }
@@ -223,13 +223,13 @@ export default function Home() {
                 </label>
                 <input
                   type="number"
-                  placeholder="range 25-120"
+                  placeholder="range 45-120"
                   step="any" // allow decimal
                   value={height}
                   className={` input-bordered input w-full ${
                     !isHeightValid.current && "input-error"
                   } `}
-                  pattern="/\d+\.?\d*/"
+                  pattern="/\d+\.?\d*$/"
                   inputMode="decimal"
                   onChange={(e) =>
                     setHeight((height) =>
@@ -244,7 +244,7 @@ export default function Home() {
                 </span>
               </label>
               <SexSelectBox onChange={(e) => setSex(e)} />
-              <div className=" flex items-center justify-center gap-x-6 py-2 pt-3">
+              <div className={`flex items-center justify-center gap-x-6 py-2 pt-3 `}>
                 <label
                   onClick={(event) => {
                     setIsFormError(false);
@@ -262,7 +262,7 @@ export default function Home() {
                     console.log(weight, height, sex);
                   }}
                   // htmlFor="my-modal-3"
-                  className="btn-primary btn"
+                  className={`btn-primary btn ${!(isWeightValid.current &isHeightValid.current) && "btn-disabled"}`}
                 >
                   Calculate
                 </label>

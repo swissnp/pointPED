@@ -6,6 +6,7 @@ export const drug = [
     max: 2,
     coef: 1,
     unit: "ml",
+    bodyWeightType: "TBW",
   },
   {
     value: "adenosine",
@@ -14,6 +15,7 @@ export const drug = [
     max: 12,
     coef: 6,
     unit: "ml",
+    bodyWeightType: "IBW",
   },
   {
     value: "adrenaline",
@@ -22,6 +24,7 @@ export const drug = [
     max: 1,
     coef: 0.1,
     unit: "ml",
+    bodyWeightType: "ABW",
   },
   {
     value: "atropineSulfate",
@@ -30,6 +33,7 @@ export const drug = [
     max: 3,
     coef: 0.5,
     unit: "ml",
+    bodyWeightType: "ABW",
   },
   {
     value: "calciumGluconate",
@@ -38,6 +42,7 @@ export const drug = [
     max: 10,
     coef: 1,
     unit: "ml",
+    bodyWeightType: "ABW",
   },
   {
     value: "amiodarone",
@@ -46,6 +51,7 @@ export const drug = [
     max: 150,
     coef: 15,
     unit: "ml",
+    bodyWeightType: "IBW",
   },
   {
     value: "glucose",
@@ -54,6 +60,7 @@ export const drug = [
     max: 50,
     coef: 5,
     unit: "ml",
+    bodyWeightType: "TBW",
   },
   {
     value: "nahco3",
@@ -62,6 +69,7 @@ export const drug = [
     max: 50,
     coef: 5,
     unit: "ml",
+    bodyWeightType: "TBW",
   },
   {
     value: "naloxone",
@@ -70,6 +78,7 @@ export const drug = [
     max: 2,
     coef: 0.2,
     unit: "ml",
+    bodyWeightType: "TBW",
   },
   {
     value: "lidocane",
@@ -78,6 +87,7 @@ export const drug = [
     max: 300,
     coef: 30,
     unit: "ml",
+    bodyWeightType: "TBW",
   },
 ];
 
