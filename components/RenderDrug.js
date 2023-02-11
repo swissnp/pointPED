@@ -38,7 +38,7 @@ export default function RenderComponent(props) {
           {isMin && <div className="badge-info badge-outline badge">min</div>}
         </td>
         <td>
-          {dose} {selectedDrug[i].unit}
+          {+dose.toFixed(2)} {selectedDrug[i].unit}
         </td>
       </tr>
     );

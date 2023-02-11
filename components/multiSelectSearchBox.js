@@ -114,15 +114,11 @@ const group1Options = [
 ];
 
 const createGroup = (groupName, options, setValue) => {
-  const [onHover, setOnHover] = useState(false);
-  const [onFocus, setOnFocus] = useState(false);
   return {
     label: (() => {
       return (
         <div
-          className={`text_black select__option text-black select__option css-10wo9uf-option ${onHover ? "select__option--is-focused" : ""}`}
-          onFocus={(e)=> setOnFocus(true)}
-          onHover={(e)=> setOnHover(true)}
+          className={`!text_black select__option !text-black select__option css-10wo9uf-option `}
           onClick={() =>
             setValue(value =>
               value.concat(options.filter(grpOpt => !value.includes(grpOpt)))
