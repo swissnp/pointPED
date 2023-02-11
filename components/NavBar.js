@@ -5,7 +5,7 @@ export default function NavBar(){
           <a className="btn btn-ghost normal-case text-xl text-primary">Point<div className="text-base-content">PED</div></a>
         </div>
         <div className="navbar-end">
-          <a className="btn btn-accent">Get started</a>
+          {/* <a className="btn btn-accent">Get started</a> */}
         </div>
       </div>
     )
