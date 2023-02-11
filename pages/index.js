@@ -181,7 +181,7 @@ export default function Home() {
                   Drugs<span className="text-error"> *</span>
                 </span>
               </label>
-              <MultiSelectSearchBox onChange={(e) => handleChange(e)} />
+              <MultiSelectSearchBox onChange={(e) => handleChange(e)} value={selectedDrug} />
               <div className="form-control w-auto ">
                 <label className="label">
                   <span className="label-text">Weight (kg)</span>
