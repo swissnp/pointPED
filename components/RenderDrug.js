@@ -46,15 +46,3 @@ export default function RenderComponent(props) {
   return <tbody>{list}</tbody>;
 }
 
-// const calculate_drug = (weight, height, sex, selectedDrug) => {
-//     console.log(selectedDrug);
-//     let calculatedWeight = calculateWeight(weight, height, sex);
-//     console.log(calculatedWeight);
-//     if (typeof calculatedWeight === "object") {
-//     } else {
-//       for (let i = 0; i < selectedDrug.length; i++) {
-//         let dose = selectedDrug[i].coef * calculatedWeight;
-//         console.log(dose, selectedDrug[i].label);
-//       }
-//     }
-//   };
