@@ -195,13 +195,13 @@ export default function Home() {
                 </label>
                 <input
                   type="number"
-                  step="any" // allow decimal
+                  step=".01" // allow decimal
                   value={weight}
                   placeholder="range 0-400"
                   className={` input-bordered input w-full ${
                     !isWeightValid.current && "input-error"
                   } `}
-                  pattern="/^\d*\.?\d*$/"
+                  // pattern="/^\d*\.?\d*$/"
                   inputMode="decimal"
                   onChange={(e) =>
                     setWeight((weight) =>
@@ -224,12 +224,12 @@ export default function Home() {
                 <input
                   type="number"
                   placeholder="range 45-120"
-                  step="any" // allow decimal
+                  step=".01" // allow decimal
                   value={height}
                   className={` input-bordered input w-full ${
                     !isHeightValid.current && "input-error"
                   } `}
-                  pattern="/\d+\.?\d*$/"
+                  // pattern="/\d+\.?\d*$/"
                   inputMode="decimal"
                   onChange={(e) =>
                     setHeight((height) =>
