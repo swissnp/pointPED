@@ -201,7 +201,7 @@ export default function Home() {
                   className={` input-bordered input w-full ${
                     !isWeightValid.current && "input-error"
                   } `}
-                  // pattern="/^\d*\.?\d*$/"
+                  pattern="^\d*(\.\d{0,2})?$"
                   inputMode="decimal"
                   onChange={(e) =>
                     setWeight((weight) =>
