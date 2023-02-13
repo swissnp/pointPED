@@ -93,7 +93,7 @@ export default function Home() {
       />
 
       <div className="modal text-base-content">
-        <div className="modal-box w-11/12 max-w-2xl">
+        <div className="modal-box w-11/12 max-w-lg" id="modal">
           <label
             htmlFor="my-modal-3"
             className="btn-sm btn-circle btn absolute right-2 top-2"
@@ -106,9 +106,8 @@ export default function Home() {
           <div className="flex max-h-screen items-center justify-center gap-x-6 pb-1">
             <InformationBox weight={weight} height={height} sex={sex} />
           </div>
-
-          <div className="overflow-x-auto pt-2 shadow-sm">
-            <table className="table-zebra table-compact w-full">
+          <div className="overflow-x-scroll pt-2 shadow-sm max-h-full">
+            <table className="table-zebra table-compact w-full ">
               <thead>
                 <tr>
                   <th>
