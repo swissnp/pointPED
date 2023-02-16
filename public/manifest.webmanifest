@@ -28,11 +28,11 @@
         }
       ]
       ,
-    "id": "/",
-    "start_url": "/",
+    "id": "../",
+    "start_url": "../",
     "background_color": "#ffffff",
     "display": "standalone",
-    "scope": "/",
+    "scope": "../",
     "theme_color": "#ffffff",
     "shortcuts": [],
     "description": "calculate dose fast and easy",
