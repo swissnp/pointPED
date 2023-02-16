@@ -7,6 +7,7 @@ export default function SexSelectBox(props) {
         classNamePrefix="select"
         options={[{label:'Male'}, {label:'Female'}]}
         onChange={props.onChange}
+        value={props.value}
       />
     );
   }

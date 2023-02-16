@@ -137,7 +137,7 @@ function MoreInfo(props) {
         {open && (
           <div
             tabIndex={0}
-            className="Tooltip card compact rounded-box w-fit bg-base-100 shadow"
+            className="Tooltip card compact rounded-box w-fit bg-base-100 shadow-lg"
             ref={refs.setFloating}
             style={{
               // Positioning styles

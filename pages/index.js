@@ -6,6 +6,16 @@ import MultiSelectSearchBox from "@/components/MultiSelectSearchBox";
 import SexSelectBox from "@/components/SexSelectBox";
 import RenderComponent from "@/components/RenderDrug";
 import InformationBox from "@/components/Modal";
+import { useCookies } from "react-cookie";
+import { CookiesProvider } from 'react-cookie';
+
+export default function Root() {
+  return (
+    <CookiesProvider>
+      <Home />
+    </CookiesProvider>
+  );
+}
 
 const validateWeight = (weight) => {
   if (
@@ -48,7 +58,29 @@ const validateForm = (weight, height, sex, selectedDrug) => {
   }
 };
 
-export default function Home() {
+const handleCookies = (weight, height, sex, setCookies, cookies) => {
+  try {
+    let oldCookies = cookies.recents.data;
+    if (oldCookies.length > 10) {
+      oldCookies.shift();
+    }
+    oldCookies.push({ weight, height, sex });
+    setCookies("recents", JSON.stringify({ data: oldCookies }), { path: "/" });
+  } catch (e) {
+    try {
+      setCookies(
+        "recents",
+        JSON.stringify({ data: [{ weight, height, sex }] }),
+        { path: "/" }
+      );
+    } catch (e2) {
+      console.error(e)
+      console.error(e2);
+    }
+  }
+};
+
+function Home() {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [selectedDrug, setSelectedDrug] = useState([]);
@@ -60,6 +92,7 @@ export default function Home() {
   const isObese = useRef(false);
   const [formError, setFormError] = useState("");
   const [isFormError, setIsFormError] = useState(false);
+  const [cookies, setCookies, removeCookies] = useCookies(["recents"]);
 
   isWeightValid.current = validateWeight(weight);
   isHeightValid.current = validateHeight(height);
@@ -96,7 +129,7 @@ export default function Home() {
         <div className="modal-box w-11/12 max-w-lg" id="modal">
           <label
             htmlFor="my-modal-3"
-            className="btn-sm btn-circle btn absolute right-2 top-2"
+            className="btn-sm btn-circle  btn absolute right-2 top-2"
             onClick={() => {
               setIsModalOpen(false);
             }}
@@ -106,16 +139,16 @@ export default function Home() {
           <div className="flex max-h-screen items-center justify-center gap-x-6 pb-1">
             <InformationBox weight={weight} height={height} sex={sex} />
           </div>
-          <div className="overflow-x-scroll pt-2 shadow-sm max-h-full">
+          <div className="max-h-full overflow-x-scroll pt-2">
             <table className="table-zebra table-compact w-full ">
               <thead>
                 <tr>
                   <th>
                     Drugs{" "}
                     {isObese.current ? (
-                      <div className="badge-error badge ml-1 gap-1">Obese</div>
+                      <div className="badge badge-error ml-1 gap-1">Obese</div>
                     ) : (
-                      <div className="badge-success badge ml-1 gap-1">
+                      <div className="badge badge-success ml-1 gap-1">
                         Not Obese
                       </div>
                     )}
@@ -133,7 +166,7 @@ export default function Home() {
       </div>
       <main>
         <div className="min-h-screen overflow-auto bg-base-200">
-          <NavBar />
+          <NavBar cookies={cookies} setWeight={setWeight} setHeight={setHeight} setSex={setSex}/>
           <div className="mx-3 my-5">
             <div className="container mx-auto max-w-screen-md rounded-lg bg-base-100 px-6 py-3 text-base-content drop-shadow-md">
               <div className="prose-lg p-3 text-center font-bold text-base-content lg:prose-xl">
@@ -232,7 +265,7 @@ export default function Home() {
                   Select Sex<span className="text-error"> *</span>
                 </span>
               </label>
-              <SexSelectBox onChange={(e) => setSex(e)} />
+              <SexSelectBox onChange={(e) => setSex(e)} value = {sex}/>
               <div
                 className={`flex items-center justify-center gap-x-6 py-2 pt-3 `}
               >
@@ -244,8 +277,9 @@ export default function Home() {
                       setIsModalOpen(
                         validateForm(weight, height, sex, selectedDrug)
                       );
+                      handleCookies(weight, height, sex, setCookies, cookies);
                     } catch (e) {
-                      console.log(e);
+                      console.error(e);
                       setIsFormError(true);
                       setFormError(e);
                     }
