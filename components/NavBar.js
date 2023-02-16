@@ -82,7 +82,7 @@ function RecentsBox(props) {
   if (isMounted) {
     try {
       let currentCookie = cookies.recents.data;
-      for (let i = 0; i < currentCookie.length; i++) {
+      for (let i = currentCookie.length-1; i >= 0; i--) {
         list.push(
           <tr
             key={currentCookie[i].value}
