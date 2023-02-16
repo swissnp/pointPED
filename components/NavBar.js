@@ -60,7 +60,7 @@ function RecentsBox(props) {
               setSex(currentCookie[i].sex);
               setOpen(false);
             }}
-            className = 'btn-ghost hover'
+            className="btn-ghost hover"
             tabIndex={0}
           >
             <td>{currentCookie[i].weight}</td>
@@ -70,11 +70,7 @@ function RecentsBox(props) {
         );
       }
     } catch (e) {
-      list.push(
-        <li key="noRecents" className="py-3 text-center text-base-content">
-          No recent calculations
-        </li>
-      );
+      console.log("NO RECENTS");
     }
   }
   // <tr>
@@ -141,16 +137,20 @@ function RecentsBox(props) {
             {...getFloatingProps()}
           >
             <li className="card-title py-2">History</li>
-            <table className="table-zebra table w-full">
-              <thead>
-                <tr>
-                  <th>Weight</th>
-                  <th>Height</th>
-                  <th>Sex</th>
-                </tr>
-              </thead>
-              <tbody>{list}</tbody>
-            </table>
+            {list.length === 0 ? (
+              <div className="text-center">No Recent Calculations</div>
+            ) : (
+              <table className="table-zebra table w-full">
+                <thead>
+                  <tr>
+                    <th>Weight</th>
+                    <th>Height</th>
+                    <th>Sex</th>
+                  </tr>
+                </thead>
+                <tbody>{list}</tbody>
+              </table>
+            )}
           </ul>
         )}
       </FloatingPortal>
