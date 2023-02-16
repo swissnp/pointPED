@@ -11,6 +11,9 @@ import {
   useClick,
   useInteractions,
   FloatingPortal,
+  useDelayGroupContext,
+  FloatingDelayGroup,
+  useTransitionStyles,
 } from "@floating-ui/react";
 
 export default function NavBar(props) {
@@ -45,11 +48,42 @@ function RecentsBox(props) {
   const setHeight = props.setHeight;
   const setSex = props.setSex;
 
+  const { x, y, refs, strategy, context } = useFloating({
+    open,
+    onOpenChange: setOpen,
+    placement: "bottom-end",
+    // Make sure the RecentsBox stays on the screen
+    whileElementsMounted: autoUpdate,
+    middleware: [
+      offset(5),
+      flip({
+        fallbackAxisSideDirection: "start",
+      }),
+      shift(),
+    ],
+  });
+  
+  // Event listeners to change the open state
+  const focus = useFocus(context);
+  const dismiss = useDismiss(context);
+  const click = useClick(context);
+  const { isMounted, styles } = useTransitionStyles(context, {
+    duration: {
+      open: 200,
+      close: 200,
+    },
+  });
+
+  // Merge all the interactions into prop getters
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    focus,
+    dismiss,
+    click,
+  ]);
   let list = [];
-  if (open) {
+  if (isMounted) {
     try {
       let currentCookie = cookies.recents.data;
-      console.log(currentCookie);
       for (let i = 0; i < currentCookie.length; i++) {
         list.push(
           <tr
@@ -73,45 +107,6 @@ function RecentsBox(props) {
       console.log("NO RECENTS");
     }
   }
-  // <tr>
-  //   <td>Cy Ganderton</td>
-  //   <td>Quality Control Specialist</td>
-  //   <td>Blue</td>
-  // </tr>;
-  // for (let i = 0; i < currentCookie.length; i++) {
-  //   list.push(
-  //     <li key={currentCookie[i].value}>
-  //       <a>{currentCookie[i].label}</a>
-  //     </li>
-  //   );
-  // }
-
-  const { x, y, refs, strategy, context } = useFloating({
-    open,
-    onOpenChange: setOpen,
-    placement: "bottom-end",
-    // Make sure the RecentsBox stays on the screen
-    whileElementsMounted: autoUpdate,
-    middleware: [
-      offset(5),
-      flip({
-        fallbackAxisSideDirection: "start",
-      }),
-      shift(),
-    ],
-  });
-
-  // Event listeners to change the open state
-  const focus = useFocus(context);
-  const dismiss = useDismiss(context);
-  const click = useClick(context);
-
-  // Merge all the interactions into prop getters
-  const { getReferenceProps, getFloatingProps } = useInteractions([
-    focus,
-    dismiss,
-    click,
-  ]);
   return (
     <>
       <label
@@ -123,22 +118,25 @@ function RecentsBox(props) {
         <ClockIcon className="h-6 w-6 " />
       </label>
       <FloatingPortal>
-        {open && (
+        {isMounted && (
           <ul
             tabIndex={0}
             className="dropdown-content menu rounded-box mt-4 w-fit bg-base-100 p-2 text-neutral shadow-lg transition delay-150 duration-300 ease-in-out"
             ref={refs.setFloating}
             style={{
               // Positioning styles
+              ...styles,
               position: strategy,
               top: y ?? 0,
               left: x ?? 0,
             }}
             {...getFloatingProps()}
           >
-            <li className="card-title py-2">History</li>
+            <li className="card-title py-2">Recents</li>
             {list.length === 0 ? (
-              <div className="text-center">No Recent Calculations</div>
+              <div className="px-4 py-2 text-center text-gray-500">
+                No recent calculations
+              </div>
             ) : (
               <table className="table-zebra table w-full">
                 <thead>
@@ -156,20 +154,4 @@ function RecentsBox(props) {
       </FloatingPortal>
     </>
   );
-}
-
-{
-  /* <div className="overflow-x-auto">
-  <table className="table-zebra table w-full">
-    <thead>
-      <tr>
-        <th></th>
-        <th>Name</th>
-        <th>Job</th>
-        <th>Favorite Color</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>; */
 }

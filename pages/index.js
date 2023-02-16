@@ -59,19 +59,25 @@ const validateForm = (weight, height, sex, selectedDrug) => {
 };
 
 const handleCookies = (weight, height, sex, setCookies, cookies) => {
+  let expireDate = Date.now() + 60*60*24*365*1000;
   try {
     let oldCookies = cookies.recents.data;
-    if (oldCookies.length > 10) {
-      oldCookies.shift();
+    var filtered = oldCookies.filter(function(value, index, arr){ 
+      if (JSON.stringify(value) !== JSON.stringify({ weight, height, sex })){
+        return value;
+      }
+  });
+    if (filtered.length > 10) {
+      filtered.shift();
     }
-    oldCookies.push({ weight, height, sex });
-    setCookies("recents", JSON.stringify({ data: oldCookies }), { path: "/" });
+    filtered.push({ weight, height, sex });
+    setCookies("recents", JSON.stringify({ data: filtered }), { path: "/" , expires: new Date(expireDate) });
   } catch (e) {
     try {
       setCookies(
         "recents",
         JSON.stringify({ data: [{ weight, height, sex }] }),
-        { path: "/" }
+        { path: "/" }, { expires: new Date(expireDate) }
       );
     } catch (e2) {
       console.error(e)
