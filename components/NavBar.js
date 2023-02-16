@@ -11,8 +11,6 @@ import {
   useClick,
   useInteractions,
   FloatingPortal,
-  useDelayGroupContext,
-  FloatingDelayGroup,
   useTransitionStyles,
 } from "@floating-ui/react";
 
@@ -94,7 +92,7 @@ function RecentsBox(props) {
               setSex(currentCookie[i].sex);
               setOpen(false);
             }}
-            className="btn-ghost hover"
+            className="btn-ghost hover "
             tabIndex={0}
           >
             <td>{currentCookie[i].weight}</td>
@@ -121,7 +119,7 @@ function RecentsBox(props) {
         {isMounted && (
           <ul
             tabIndex={0}
-            className="dropdown-content menu rounded-box mt-4 w-fit bg-base-100 p-2 text-neutral shadow-lg transition delay-150 duration-300 ease-in-out"
+            className="dropdown-content menu rounded-box mt-4 w-fit bg-base-100 p-2 text-neutral shadow-lg"
             ref={refs.setFloating}
             style={{
               // Positioning styles

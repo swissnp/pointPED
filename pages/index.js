@@ -67,7 +67,7 @@ const handleCookies = (weight, height, sex, setCookies, cookies) => {
         return value;
       }
   });
-    if (filtered.length > 10) {
+    if (filtered.length >= 6) {
       filtered.shift();
     }
     filtered.push({ weight, height, sex });
