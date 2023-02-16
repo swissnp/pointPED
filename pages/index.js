@@ -7,7 +7,7 @@ import SexSelectBox from "@/components/SexSelectBox";
 import RenderComponent from "@/components/RenderDrug";
 import InformationBox from "@/components/Modal";
 import { useCookies } from "react-cookie";
-import { CookiesProvider } from 'react-cookie';
+import { CookiesProvider } from "react-cookie";
 
 export default function Root() {
   return (
@@ -59,28 +59,32 @@ const validateForm = (weight, height, sex, selectedDrug) => {
 };
 
 const handleCookies = (weight, height, sex, setCookies, cookies) => {
-  let expireDate = Date.now() + 60*60*24*365*1000;
+  let expireDate = Date.now() + 60 * 60 * 24 * 365 * 1000;
   try {
     let oldCookies = cookies.recents.data;
-    var filtered = oldCookies.filter(function(value, index, arr){ 
-      if (JSON.stringify(value) !== JSON.stringify({ weight, height, sex })){
+    var filtered = oldCookies.filter(function (value, index, arr) {
+      if (JSON.stringify(value) !== JSON.stringify({ weight, height, sex })) {
         return value;
       }
-  });
+    });
     if (filtered.length >= 6) {
       filtered.shift();
     }
     filtered.push({ weight, height, sex });
-    setCookies("recents", JSON.stringify({ data: filtered }), { path: "/" , expires: new Date(expireDate) });
+    setCookies("recents", JSON.stringify({ data: filtered }), {
+      path: "/",
+      expires: new Date(expireDate),
+    });
   } catch (e) {
     try {
       setCookies(
         "recents",
         JSON.stringify({ data: [{ weight, height, sex }] }),
-        { path: "/" }, { expires: new Date(expireDate) }
+        { path: "/" },
+        { expires: new Date(expireDate) }
       );
     } catch (e2) {
-      console.error(e)
+      console.error(e);
       console.error(e2);
     }
   }
@@ -99,6 +103,7 @@ function Home() {
   const [formError, setFormError] = useState("");
   const [isFormError, setIsFormError] = useState(false);
   const [cookies, setCookies, removeCookies] = useCookies(["recents"]);
+  const [changeFromRecents, setChangeFromRecents] = useState(false);
 
   isWeightValid.current = validateWeight(weight);
   isHeightValid.current = validateHeight(height);
@@ -172,7 +177,13 @@ function Home() {
       </div>
       <main>
         <div className="min-h-screen overflow-auto bg-base-200">
-          <NavBar cookies={cookies} setWeight={setWeight} setHeight={setHeight} setSex={setSex}/>
+          <NavBar
+            cookies={cookies}
+            setWeight={setWeight}
+            setHeight={setHeight}
+            setSex={setSex}
+            setChangeFromRecents={setChangeFromRecents}
+          />
           <div className="mx-3 my-5">
             <div className="container mx-auto max-w-screen-md rounded-2xl bg-base-100 px-6 py-5 text-base-content drop-shadow-md">
               <div className="prose-lg p-3 text-center font-bold text-base-content lg:prose-xl">
@@ -228,14 +239,15 @@ function Home() {
                   placeholder="range 0-400"
                   className={` input-bordered input w-full ${
                     !isWeightValid.current && "input-error"
-                  } `}
+                  } ${changeFromRecents && "input-info"}`}
                   pattern="^\d*(\.\d{0,2})?$"
                   inputMode="decimal"
-                  onChange={(e) =>
+                  onChange={(e) => {
                     setWeight((weight) =>
                       e.target.validity.valid ? e.target.value : weight
-                    )
-                  }
+                    );
+                    setChangeFromRecents(false);
+                  }}
                 />
               </div>
               <div className="form-control w-auto ">
@@ -254,16 +266,18 @@ function Home() {
                   placeholder="range 45-120"
                   step=".01" // allow decimal
                   value={height}
-                  className={` input-bordered input w-full ${
-                    !isHeightValid.current && "input-error"
-                  } `}
+                  className={`input-bordered input w-full 
+                  ${!isHeightValid.current && "input-error"} ${
+                    changeFromRecents && "input-info"
+                  }`}
                   // pattern="/\d+\.?\d*$/"
                   inputMode="decimal"
-                  onChange={(e) =>
+                  onChange={(e) => {
                     setHeight((height) =>
                       e.target.validity.valid ? e.target.value : height
-                    )
-                  }
+                    );
+                    setChangeFromRecents(false);
+                  }}
                 />
               </div>
               <label className="label">
@@ -271,7 +285,7 @@ function Home() {
                   Select Sex<span className="text-error"> *</span>
                 </span>
               </label>
-              <SexSelectBox onChange={(e) => setSex(e)} value = {sex}/>
+              <SexSelectBox onChange={(e) => setSex(e)} value={sex} classNames ={`${changeFromRecents && 'outline-blue'}`}/>
               <div
                 className={`flex items-center justify-center gap-x-6 py-2 pt-3 `}
               >

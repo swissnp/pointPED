@@ -19,6 +19,7 @@ export default function NavBar(props) {
   const setWeight = props.setWeight;
   const setHeight = props.setHeight;
   const setSex = props.setSex;
+  const setChangeFromRecents = props.setChangeFromRecents;
   return (
     <div className="navbar bg-base-100 drop-shadow ">
       <div className="navbar-start">
@@ -33,6 +34,7 @@ export default function NavBar(props) {
           setWeight={setWeight}
           setHeight={setHeight}
           setSex={setSex}
+          setChangeFromRecents={setChangeFromRecents}
         />
       </div>
     </div>
@@ -45,6 +47,7 @@ function RecentsBox(props) {
   const setWeight = props.setWeight;
   const setHeight = props.setHeight;
   const setSex = props.setSex;
+  const setChangeFromRecents = props.setChangeFromRecents;
 
   const { x, y, refs, strategy, context } = useFloating({
     open,
@@ -91,8 +94,9 @@ function RecentsBox(props) {
               setWeight(currentCookie[i].weight);
               setSex(currentCookie[i].sex);
               setOpen(false);
+              setChangeFromRecents(true);
             }}
-            className="btn-ghost hover "
+            className="btn-ghost hover"
             tabIndex={0}
           >
             <td>{currentCookie[i].weight}</td>
