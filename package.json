@@ -15,6 +15,7 @@
     "daisyui": "^2.49.0",
     "heroicons": "^2.0.14",
     "next": "13.1.6",
+    "pwa-asset-generator": "^6.2.1",
     "react": "18.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "18.2.0",

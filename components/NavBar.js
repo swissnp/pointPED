@@ -24,7 +24,7 @@ export default function NavBar(props) {
     <div className="navbar bg-base-100 drop-shadow ">
       <div className="navbar-start">
         <a className="btn-ghost btn text-xl normal-case text-primary">
-          <div className="text-xl text-primary">Point</div>
+          <div className="text-xl text-primary">.</div>
           <div className="text-base-content">PED</div>
         </a>
       </div>
