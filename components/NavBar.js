@@ -22,7 +22,8 @@ export default function NavBar(props) {
     <div className="navbar bg-base-100 drop-shadow ">
       <div className="navbar-start">
         <a className="btn-ghost btn text-xl normal-case text-primary">
-          Point<div className="text-base-content">PED</div>
+          <div className="text-xl text-primary">Point</div>
+          <div className="text-base-content">PED</div>
         </a>
       </div>
       <div className="navbar-end">
@@ -36,16 +37,6 @@ export default function NavBar(props) {
     </div>
   );
 }
-function setFields(weight, height, sex, setWeight, setHeight, setSex) {
-  setHeight(height);
-  setWeight(weight);
-  setSex(sex);
-}
-
-function timeout(delay) {
-  return new Promise( res => setTimeout(res, delay) );
-}
-
 
 function RecentsBox(props) {
   const [open, setOpen] = useState(false);
@@ -56,30 +47,41 @@ function RecentsBox(props) {
 
   let list = [];
   if (open) {
-    let currentCookie = cookies.recents.data;
-    console.log(currentCookie);
-    for (let i = 0; i < currentCookie.length; i++) {
-      list.push(
-        <li key={currentCookie[i].value}>
-          <a
-            onClick={() =>{setFields(
-                currentCookie[i].weight,
-                currentCookie[i].height,
-                currentCookie[i].sex,
-                setWeight,
-                setHeight,
-                setSex
-              )
-              setOpen(false)}
-            }
+    try {
+      let currentCookie = cookies.recents.data;
+      console.log(currentCookie);
+      for (let i = 0; i < currentCookie.length; i++) {
+        list.push(
+          <tr
+            key={currentCookie[i].value}
+            onClick={() => {
+              setHeight(currentCookie[i].height);
+              setWeight(currentCookie[i].weight);
+              setSex(currentCookie[i].sex);
+              setOpen(false);
+            }}
+            className = 'btn-ghost hover'
+            tabIndex={0}
           >
-            W:{currentCookie[i].weight} H:{currentCookie[i].height}{" "}
-            Sex:{currentCookie[i].sex.label}
-          </a>
+            <td>{currentCookie[i].weight}</td>
+            <td>{currentCookie[i].height}</td>
+            <td>{currentCookie[i].sex.label}</td>
+          </tr>
+        );
+      }
+    } catch (e) {
+      list.push(
+        <li key="noRecents" className="py-3 text-center text-base-content">
+          No recent calculations
         </li>
       );
     }
   }
+  // <tr>
+  //   <td>Cy Ganderton</td>
+  //   <td>Quality Control Specialist</td>
+  //   <td>Blue</td>
+  // </tr>;
   // for (let i = 0; i < currentCookie.length; i++) {
   //   list.push(
   //     <li key={currentCookie[i].value}>
@@ -126,25 +128,48 @@ function RecentsBox(props) {
       </label>
       <FloatingPortal>
         {open && (
-          <div className="Tooltip card dropdown-content rounded-box w-64 bg-base-100 shadow-lg ">
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu rounded-box mt-4 w-52 bg-base-100 p-2 text-neutral shadow-lg transition delay-150 duration-300 ease-in-out"
-              ref={refs.setFloating}
-              style={{
-                // Positioning styles
-                position: strategy,
-                top: y ?? 0,
-                left: x ?? 0,
-              }}
-              {...getFloatingProps()}
-            >
-              <li className="card-title py-2">History</li>
-              {list}
-            </ul>
-          </div>
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu rounded-box mt-4 w-fit bg-base-100 p-2 text-neutral shadow-lg transition delay-150 duration-300 ease-in-out"
+            ref={refs.setFloating}
+            style={{
+              // Positioning styles
+              position: strategy,
+              top: y ?? 0,
+              left: x ?? 0,
+            }}
+            {...getFloatingProps()}
+          >
+            <li className="card-title py-2">History</li>
+            <table className="table-zebra table w-full">
+              <thead>
+                <tr>
+                  <th>Weight</th>
+                  <th>Height</th>
+                  <th>Sex</th>
+                </tr>
+              </thead>
+              <tbody>{list}</tbody>
+            </table>
+          </ul>
         )}
       </FloatingPortal>
     </>
   );
+}
+
+{
+  /* <div className="overflow-x-auto">
+  <table className="table-zebra table w-full">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Job</th>
+        <th>Favorite Color</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>; */
 }

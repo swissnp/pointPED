@@ -168,7 +168,7 @@ function Home() {
         <div className="min-h-screen overflow-auto bg-base-200">
           <NavBar cookies={cookies} setWeight={setWeight} setHeight={setHeight} setSex={setSex}/>
           <div className="mx-3 my-5">
-            <div className="container mx-auto max-w-screen-md rounded-lg bg-base-100 px-6 py-3 text-base-content drop-shadow-md">
+            <div className="container mx-auto max-w-screen-md rounded-2xl bg-base-100 px-6 py-5 text-base-content drop-shadow-md">
               <div className="prose-lg p-3 text-center font-bold text-base-content lg:prose-xl">
                 <h1>PointPED</h1>
               </div>
