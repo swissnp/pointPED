@@ -1,4 +1,4 @@
-/** @type {import('next').NextConfig} */
+// /** @type {import('next').NextConfig} */
 // const nextConfig = {
   
 // }
@@ -11,7 +11,7 @@ module.exports = withWorkbox({
     // dest: "public",
     // swDest: "sw.js",
     // swSrc: "worker.js",
-    // force: true,
+    force: true,
   },
   reactStrictMode: true,
 });
