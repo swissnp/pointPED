@@ -4,7 +4,11 @@ const nextConfig = {
 }
 
 const withPWA = require('next-pwa')({
-  dest: 'public'
+  dest: 'public',
+  fallbacks: {
+      document: '/index.js',
+      // document: '/other-offline',  // if you want to fallback to a custom    page other than /_offline
+    },
 })
 module.exports = withPWA({
   nextConfig

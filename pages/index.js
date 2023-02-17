@@ -90,7 +90,7 @@ const handleCookies = (weight, height, sex, setCookies, cookies) => {
   }
 };
 
-function Home() {
+export function Home() {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [selectedDrug, setSelectedDrug] = useState([]);

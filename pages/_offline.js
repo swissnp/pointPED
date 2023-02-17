@@ -1,1 +1,0 @@
-import {Root} form '@pages/index.js';
