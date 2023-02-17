@@ -29,7 +29,7 @@
       ]
       
       ,
-    "start_url": "../?source=pwa'",
+    "start_url": "../",
     "background_color": "#ffffff",
     "display": "standalone",
     "theme_color": "#ffffff",
