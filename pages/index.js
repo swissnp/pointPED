@@ -6,6 +6,16 @@ import MultiSelectSearchBox from "@/components/MultiSelectSearchBox";
 import SexSelectBox from "@/components/SexSelectBox";
 import RenderComponent from "@/components/RenderDrug";
 import InformationBox from "@/components/Modal";
+import { useCookies } from "react-cookie";
+import { CookiesProvider } from "react-cookie";
+
+export default function Root() {
+  return (
+    <CookiesProvider>
+      <Home />
+    </CookiesProvider>
+  );
+}
 
 const validateWeight = (weight) => {
   if (
@@ -48,7 +58,39 @@ const validateForm = (weight, height, sex, selectedDrug) => {
   }
 };
 
-export default function Home() {
+const handleCookies = (weight, height, sex, setCookies, cookies) => {
+  let expireDate = Date.now() + 60 * 60 * 24 * 365 * 1000;
+  try {
+    let oldCookies = cookies.recents.data;
+    var filtered = oldCookies.filter(function (value, index, arr) {
+      if (JSON.stringify(value) !== JSON.stringify({ weight, height, sex })) {
+        return value;
+      }
+    });
+    if (filtered.length >= 6) {
+      filtered.shift();
+    }
+    filtered.push({ weight, height, sex });
+    setCookies("recents", JSON.stringify({ data: filtered }), {
+      path: "/",
+      expires: new Date(expireDate),
+    });
+  } catch (e) {
+    try {
+      setCookies(
+        "recents",
+        JSON.stringify({ data: [{ weight, height, sex }] }),
+        { path: "/" },
+        { expires: new Date(expireDate) }
+      );
+    } catch (e2) {
+      console.error(e);
+      console.error(e2);
+    }
+  }
+};
+
+export function Home() {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [selectedDrug, setSelectedDrug] = useState([]);
@@ -60,6 +102,8 @@ export default function Home() {
   const isObese = useRef(false);
   const [formError, setFormError] = useState("");
   const [isFormError, setIsFormError] = useState(false);
+  const [cookies, setCookies, removeCookies] = useCookies(["recents"]);
+  const [changeFromRecents, setChangeFromRecents] = useState(false);
 
   isWeightValid.current = validateWeight(weight);
   isHeightValid.current = validateHeight(height);
@@ -83,7 +127,13 @@ export default function Home() {
         <meta name="description" content="PointPed" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="manifest" href="/manifest.webmanifest"></link>
+        <link
+          rel="manifest"
+          href="/manifest.webmanifest"
+          crossorigin="use-credentials"
+        />
+        <link rel="apple-touch-icon" href="icons/apple-icon-180.png" />
+        <meta name="theme-color" content="#ffffff" />
       </Head>
       <input
         type="checkbox"
@@ -93,10 +143,10 @@ export default function Home() {
       />
 
       <div className="modal text-base-content">
-        <div className="modal-box w-11/12 max-w-2xl">
+        <div className="modal-box w-11/12 max-w-lg" id="modal">
           <label
             htmlFor="my-modal-3"
-            className="btn-sm btn-circle btn absolute right-2 top-2"
+            className="btn-sm btn-circle  btn absolute right-2 top-2"
             onClick={() => {
               setIsModalOpen(false);
             }}
@@ -106,17 +156,16 @@ export default function Home() {
           <div className="flex max-h-screen items-center justify-center gap-x-6 pb-1">
             <InformationBox weight={weight} height={height} sex={sex} />
           </div>
-
-          <div className="overflow-x-auto pt-2 shadow-sm">
-            <table className="table-zebra table-compact w-full">
+          <div className="max-h-full overflow-x-scroll pt-2">
+            <table className="table-zebra table-compact w-full ">
               <thead>
                 <tr>
                   <th>
                     Drugs{" "}
                     {isObese.current ? (
-                      <div className="badge-error badge ml-1 gap-1">Obese</div>
+                      <div className="badge badge-error ml-1 gap-1">Obese</div>
                     ) : (
-                      <div className="badge-success badge ml-1 gap-1">
+                      <div className="badge badge-success ml-1 gap-1">
                         Not Obese
                       </div>
                     )}
@@ -134,11 +183,18 @@ export default function Home() {
       </div>
       <main>
         <div className="min-h-screen overflow-auto bg-base-200">
-          <NavBar />
+          <NavBar
+            cookies={cookies}
+            setWeight={setWeight}
+            setHeight={setHeight}
+            setSex={setSex}
+            setChangeFromRecents={setChangeFromRecents}
+          />
           <div className="mx-3 my-5">
-            <div className="container mx-auto max-w-screen-md rounded-lg bg-base-100 px-6 py-3 text-base-content drop-shadow-md">
-              <div className="prose-lg p-3 text-center font-bold text-base-content lg:prose-xl">
-                <h1>PointPED</h1>
+            <div className="container mx-auto max-w-screen-md rounded-2xl bg-base-100 px-6 py-5 text-base-content drop-shadow-md">
+              <div className=" prose-lg  whitespace-nowrap p-3 text-center font-bold text-base-content ">
+                  <h1 className="text-primary inline">.</h1>
+                  <h1  className="inline">PED</h1>
               </div>
               <p className="text-center text-error">
                 demo version don't use in real setting
@@ -190,14 +246,15 @@ export default function Home() {
                   placeholder="range 0-400"
                   className={` input-bordered input w-full ${
                     !isWeightValid.current && "input-error"
-                  } `}
+                  } ${changeFromRecents && "input-info"}`}
                   pattern="^\d*(\.\d{0,2})?$"
                   inputMode="decimal"
-                  onChange={(e) =>
+                  onChange={(e) => {
                     setWeight((weight) =>
                       e.target.validity.valid ? e.target.value : weight
-                    )
-                  }
+                    );
+                    setChangeFromRecents(false);
+                  }}
                 />
               </div>
               <div className="form-control w-auto ">
@@ -216,16 +273,18 @@ export default function Home() {
                   placeholder="range 45-120"
                   step=".01" // allow decimal
                   value={height}
-                  className={` input-bordered input w-full ${
-                    !isHeightValid.current && "input-error"
-                  } `}
+                  className={`input-bordered input w-full 
+                  ${!isHeightValid.current && "input-error"} ${
+                    changeFromRecents && "input-info"
+                  }`}
                   // pattern="/\d+\.?\d*$/"
                   inputMode="decimal"
-                  onChange={(e) =>
+                  onChange={(e) => {
                     setHeight((height) =>
                       e.target.validity.valid ? e.target.value : height
-                    )
-                  }
+                    );
+                    setChangeFromRecents(false);
+                  }}
                 />
               </div>
               <label className="label">
@@ -233,7 +292,11 @@ export default function Home() {
                   Select Sex<span className="text-error"> *</span>
                 </span>
               </label>
-              <SexSelectBox onChange={(e) => setSex(e)} />
+              <SexSelectBox
+                onChange={(e) => setSex(e)}
+                value={sex}
+                classNames={`${changeFromRecents && "outline-blue"}`}
+              />
               <div
                 className={`flex items-center justify-center gap-x-6 py-2 pt-3 `}
               >
@@ -245,8 +308,9 @@ export default function Home() {
                       setIsModalOpen(
                         validateForm(weight, height, sex, selectedDrug)
                       );
+                      handleCookies(weight, height, sex, setCookies, cookies);
                     } catch (e) {
-                      console.log(e);
+                      console.error(e);
                       setIsFormError(true);
                       setFormError(e);
                     }

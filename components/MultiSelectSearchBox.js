@@ -1,8 +1,6 @@
 import {React,useState} from "react";
 
 import Select from "react-select";
-import { drug } from "./data";
-import makeAnimated from 'react-select/animated';
 
 // const animatedComponents = makeAnimated();
 
