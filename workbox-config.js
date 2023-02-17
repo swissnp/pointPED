@@ -3,7 +3,7 @@ module.exports = {
 	globPatterns: [
 		'**/*.{js,png,jpg,json,ico,svg,webmanifest,md,css}'
 	],
-	swDest: '/Users/swiss/projects/rama-poison-ped-web/public/sw.js',
+	swDest: '/Users/swiss/projects/rama-poison-ped-web/sw.js',
 	ignoreURLParametersMatching: [
 		/^utm_/,
 		/^fbclid$/

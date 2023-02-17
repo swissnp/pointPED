@@ -1,17 +1,11 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {
-  
-// }
-
-// module.exports = nextConfig
-
-const withWorkbox = require("next-with-workbox");
-module.exports = withWorkbox({
-  workbox: {
-    // dest: "public",
-    // swDest: "sw.js",
-    // swSrc: "worker.js",
-    force: true,
-  },
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: true,
-});
+}
+
+const withPWA = require('next-pwa')({
+  dest: 'public'
+})
+module.exports = withPWA({
+  nextConfig
+})
