@@ -171,7 +171,7 @@ function MoreInfo(props) {
                     selectedDrug.bodyWeightType}{" "}
                   {+drugSpecificWeight.toFixed(2)} kg
                 </span>{" "}
-                = <div className={`${(isMax || isMin) && 'line-through decoration-error decoration-2'} inline`}>{+(selectedDrug.coef * drugSpecificWeight).toFixed(2)}{" "}
+                = <div className={`${((isMax || isMin) & +(selectedDrug.coef * drugSpecificWeight).toFixed(2)!==selectedDrug.max) && 'line-through decoration-error decoration-2'} inline`}>{+(selectedDrug.coef * drugSpecificWeight).toFixed(2)}{" "}
                 {selectedDrug.unit}{" "}</div>
               </div>
             </div>

@@ -127,11 +127,13 @@ export function Home() {
         <meta name="description" content="PointPed" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials"/>
+        <link
+          rel="manifest"
+          href="/manifest.webmanifest"
+          crossorigin="use-credentials"
+        />
         <link rel="apple-touch-icon" href="icons/apple-icon-180.png" />
         <meta name="theme-color" content="#ffffff" />
-
-        
       </Head>
       <input
         type="checkbox"
@@ -190,8 +192,9 @@ export function Home() {
           />
           <div className="mx-3 my-5">
             <div className="container mx-auto max-w-screen-md rounded-2xl bg-base-100 px-6 py-5 text-base-content drop-shadow-md">
-              <div className="prose-lg p-3 text-center font-bold text-base-content lg:prose-xl">
-                <h1>PointPED</h1>
+              <div className=" prose-lg  whitespace-nowrap p-3 text-center font-bold text-base-content ">
+                  <h1 className="text-primary inline">.</h1>
+                  <h1  className="inline">PED</h1>
               </div>
               <p className="text-center text-error">
                 demo version don't use in real setting
