@@ -176,7 +176,7 @@ const withPWA = require('next-pwa')({
         const isSameOrigin = self.origin === url.origin
         return !isSameOrigin
       },
-      handler: 'StaleWhileRevalidate',
+      handler: 'NetworkFirst',
       options: {
         cacheName: 'cross-origin',
         expiration: {

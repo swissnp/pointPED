@@ -7,21 +7,17 @@ self.fallback = async request => {
   // https://developer.mozilla.org/en-US/docs/Web/API/RequestDestination
   switch (request.destination) {
     case 'document':
-      if (true) return caches.match("/public/manifest.webmanifest", {
+      if (true) return caches.match("/", {
         ignoreSearch: true
       });
     case 'image':
-      if (true) return caches.match("/public/male.svg", {
-        ignoreSearch: true
-      });
+      if (false) {}
     case 'audio':
       if (false) {}
     case 'video':
       if (false) {}
     case 'font':
-      if (true) return caches.match("/font.woff2", {
-        ignoreSearch: true
-      });
+      if (false) {}
     case '':
       if (false) {}
     default:
