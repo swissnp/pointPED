@@ -99,7 +99,7 @@ const withPWA = require('next-pwa')({
     },
     {
       urlPattern: /\.(?:css|less)$/i,
-      handler: 'StaleWhileRevalidate',
+      handler: 'CacheFirst',
       options: {
         cacheName: 'static-style-assets',
         expiration: {
