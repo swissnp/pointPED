@@ -8,7 +8,7 @@ import RenderComponent from "@/components/RenderDrug";
 import InformationBox from "@/components/Modal";
 import { useCookies } from "react-cookie";
 import { CookiesProvider } from "react-cookie";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import { TrashIcon, XCircleIcon } from "@heroicons/react/24/outline";
 export default function Root() {
   return (
     <CookiesProvider>
@@ -220,6 +220,36 @@ export function Home() {
                   </div>
                 </div>
               )}
+              {changeFromRecents && (
+                <div className="alert ">
+                  <div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      className="h-6 w-6 flex-shrink-0 stroke-info"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      ></path>
+                    </svg>
+                    <span>
+                      Weight, Height and Sex are filled with recents.{" "}
+                    </span>
+                  </div>
+                  <div className="flex-none">
+                    <button
+                      className="btn-ghost btn-sm btn"
+                      onClick={() => setChangeFromRecents(false)}
+                    >
+                      <XCircleIcon className="h-6 w-6" />
+                    </button>
+                  </div>
+                </div>
+              )}
               <label className="label">
                 <span className="label-text">
                   Drugs<span className="text-error"> *</span>
@@ -290,7 +320,7 @@ export function Home() {
               </div>
               <label className="label">
                 <span className="label-text">
-                  Select Sex<span className="text-error"> *</span>
+                  Sex<span className="text-error"> *</span>
                 </span>
               </label>
               <SexSelectBox
@@ -312,6 +342,7 @@ export function Home() {
                     setHeight("");
                     setSex("");
                     setSelectedDrug([]);
+                    setChangeFromRecents(false);
                   }}
                   className={`btn-outline btn-error btn absolute left-6`}
                 >
