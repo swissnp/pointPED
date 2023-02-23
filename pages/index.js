@@ -263,8 +263,8 @@ export function Home() {
                   )}
                 </label>
                 <input
-                  type="number"
-                  step=".01" // allow decimal
+                  type="text"
+                  // step=".01" // allow decimal
                   value={weight}
                   placeholder="range 0-400"
                   className={` input-bordered input w-full ${
@@ -292,20 +292,25 @@ export function Home() {
                   )}
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   placeholder="range 45-170"
-                  step=".01" // allow decimal
+                  // step=".01" // allow decimal
                   value={height}
                   className={`input-bordered input w-full 
                   ${!isHeightValid.current && "input-error"} ${
                     changeFromRecents && "input-info"
                   }`}
-                  // pattern="/\d+\.?\d*$/"
+                  pattern="^\d*(\.\d{0,2})?$"
                   inputMode="decimal"
                   onChange={(e) => {
-                    setHeight((height) =>
-                      e.target.validity.valid ? e.target.value : height
-                    );
+                    setHeight((height) =>{
+                      if (e.target.validity.valid){
+                        return e.target.value
+                      }else{
+                        console.log('invalid')
+                        return height
+                      }
+                  });
                     setChangeFromRecents(false);
                   }}
                 />
