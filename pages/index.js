@@ -29,7 +29,7 @@ const validateWeight = (weight) => {
 
 const validateHeight = (height) => {
   if (
-    /^\d*\.?\d*$/.test(height) & (height >= 45 && height <= 120) ||
+    /^\d*\.?\d*$/.test(height) & (height >= 45 && height <= 170) ||
     height === ""
   ) {
     return true;
@@ -101,8 +101,7 @@ export function Home() {
   const calculatedWeight = useRef(0);
   const isObese = useRef(false);
   const [formError, setFormError] = useState("");
-  const [isFormError, setIsFormError] = useState(false);
-  const [cookies, setCookies, removeCookies] = useCookies(["recents"]);
+  const [cookies, setCookies] = useCookies(["recents"]);
   const [changeFromRecents, setChangeFromRecents] = useState(false);
 
   isWeightValid.current = validateWeight(weight);
@@ -140,7 +139,7 @@ export function Home() {
         id="my-modal-3"
         className={"modal-toggle"}
         checked={isModalOpen}
-        onChange={() => {}}
+        onChange={() => {}} // This is to prevent error
       />
 
       <div className="modal text-base-content">
@@ -192,16 +191,16 @@ export function Home() {
             setChangeFromRecents={setChangeFromRecents}
           />
           <div className="z-0 mx-3 my-5">
-            <div className=" container relative top-16 mx-auto max-w-screen-md rounded-2xl bg-base-100 px-6 py-5 text-base-content drop-shadow-md">
+            <div className=" container relative top-16 mx-auto max-w-screen-sm rounded-2xl bg-base-100 px-6 py-5 text-base-content drop-shadow-md">
               <div className=" prose-lg  whitespace-nowrap p-3 text-center font-bold text-base-content ">
                 <h1 className="inline text-primary">.</h1>
                 <h1 className="inline">PED</h1>
               </div>
               <p className="text-center text-error">
-                demo version don't use in real setting
-              </p>
-              {isFormError && (
-                <div className="alert alert-error ">
+                demo version don't use in real setting.
+              </p> 
+              {formError && (
+                <div className="alert alert-error my-2 py-4">
                   <div>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -220,8 +219,8 @@ export function Home() {
                   </div>
                 </div>
               )}
-              {changeFromRecents && (
-                <div className="alert ">
+              {(changeFromRecents) && (
+                <div className="alert my-2 py-4">
                   <div>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -239,14 +238,6 @@ export function Home() {
                     <span>
                       Weight, Height and Sex are filled with recents.{" "}
                     </span>
-                  </div>
-                  <div className="flex-none">
-                    <button
-                      className="btn-ghost btn-sm btn"
-                      onClick={() => setChangeFromRecents(false)}
-                    >
-                      <XCircleIcon className="h-6 w-6" />
-                    </button>
                   </div>
                 </div>
               )}
@@ -301,7 +292,7 @@ export function Home() {
                 </label>
                 <input
                   type="number"
-                  placeholder="range 45-120"
+                  placeholder="range 45-170"
                   step=".01" // allow decimal
                   value={height}
                   className={`input-bordered input w-full 
@@ -327,16 +318,13 @@ export function Home() {
                 onChange={(e) => setSex(e)}
                 value={sex}
                 classNames={`${changeFromRecents && "outline-blue"}`}
+                changeFromRecents={changeFromRecents}
               />
               <div
-                className={`items-left absolute bottom-4 inline justify-center gap-x-6 py-2 pt-3 `}
-              ></div>
-              <div
-                className={`flex items-center justify-center gap-x-6 py-2 pt-3 `}
+                className={`flex items-center justify-center gap-x-6 pt-5 `}
               >
                 <label
                   onClick={(event) => {
-                    setIsFormError(false);
                     setFormError("");
                     setWeight("");
                     setHeight("");
@@ -344,14 +332,14 @@ export function Home() {
                     setSelectedDrug([]);
                     setChangeFromRecents(false);
                   }}
-                  className={`btn-outline btn-error btn absolute left-6`}
+                  className={`btn-outline btn-error btn  absolute left-6 `}
                 >
                   <TrashIcon className="h-6 w-6" />
                 </label>
                 <label
                   onClick={(event) => {
-                    setIsFormError(false);
                     setFormError("");
+                    setChangeFromRecents(false)
                     try {
                       setIsModalOpen(
                         validateForm(weight, height, sex, selectedDrug)
@@ -359,8 +347,8 @@ export function Home() {
                       handleCookies(weight, height, sex, setCookies, cookies);
                     } catch (e) {
                       console.error(e);
-                      setIsFormError(true);
                       setFormError(e);
+                      setChangeFromRecents(false)
                     }
 
                     console.log(weight, height, sex);

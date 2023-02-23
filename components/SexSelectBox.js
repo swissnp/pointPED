@@ -4,9 +4,15 @@ export default function SexSelectBox(props) {
     return (
       <Select
         className="basic-single"
-        classNames={props.classNames}
         classNamePrefix="select"
-        options={[{label:'Male'}, {label:'Female'}]}
+        styles={{
+          control: (baseStyles, state) => ({
+            ...baseStyles,
+            borderColor: props.changeFromRecents ? 'hsl(var(--in))' : '',
+          }),
+        }}
+        name="sex"
+        options={[{value: "male",label:'Male'}, {value: "male",label:'Female'}]}
         onChange={props.onChange}
         value={props.value}
       />

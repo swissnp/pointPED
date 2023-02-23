@@ -21,7 +21,7 @@ export default function NavBar(props) {
   const setSex = props.setSex;
   const setChangeFromRecents = props.setChangeFromRecents;
   return (
-    <div className="fixed top-0 navbar bg-base-100 drop-shadow z-10">
+    <div className="navbar fixed top-0 z-10 bg-base-100 drop-shadow">
       <div className="navbar-start">
         <a className="btn-ghost btn text-xl normal-case text-primary">
           <div className="text-xl text-primary">.</div>
@@ -63,7 +63,7 @@ function RecentsBox(props) {
       shift(),
     ],
   });
-  
+
   // Event listeners to change the open state
   const focus = useFocus(context);
   const dismiss = useDismiss(context);
@@ -85,23 +85,32 @@ function RecentsBox(props) {
   if (isMounted) {
     try {
       let currentCookie = cookies.recents.data;
-      for (let i = currentCookie.length-1; i >= 0; i--) {
+      for (let i = currentCookie.length - 1; i >= 0; i--) {
         list.push(
           <tr
             key={currentCookie[i].value}
-            onClick={() => {
-              setHeight(currentCookie[i].height);
-              setWeight(currentCookie[i].weight);
-              setSex(currentCookie[i].sex);
-              setOpen(false);
-              setChangeFromRecents(true);
-            }}
-            className="btn-ghost hover"
+            className="btn-ghost "
             tabIndex={0}
           >
             <td>{currentCookie[i].weight}</td>
             <td>{currentCookie[i].height}</td>
             <td>{currentCookie[i].sex.label}</td>
+            <td>
+              {" "}
+              <button
+                className="btn-primary btn-sm btn"
+                onClick={() => {
+                  setHeight(currentCookie[i].height);
+                  setWeight(currentCookie[i].weight);
+                  setSex(currentCookie[i].sex);
+                  setOpen(false);
+                  setChangeFromRecents(true);
+                }}
+              >
+                {" "}
+                Apply{" "}
+              </button>
+            </td>
           </tr>
         );
       }
@@ -146,6 +155,7 @@ function RecentsBox(props) {
                     <th>Weight</th>
                     <th>Height</th>
                     <th>Sex</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>{list}</tbody>
