@@ -8,7 +8,8 @@ import RenderComponent from "@/components/RenderDrug";
 import InformationBox from "@/components/Modal";
 import { useCookies } from "react-cookie";
 import { CookiesProvider } from "react-cookie";
-import { TrashIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { TrashIcon } from "@heroicons/react/24/outline";
+
 export default function Root() {
   return (
     <CookiesProvider>

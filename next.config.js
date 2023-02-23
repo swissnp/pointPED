@@ -88,7 +88,7 @@ const withPWA = require('next-pwa')({
     },
     {
       urlPattern: /\.(?:js)$/i,
-      handler: 'CacheFirst',
+      handler: 'StaleWhileRevalidate'
       options: {
         cacheName: 'static-js-assets',
         expiration: {
@@ -99,7 +99,7 @@ const withPWA = require('next-pwa')({
     },
     {
       urlPattern: /\.(?:css|less)$/i,
-      handler: 'CacheFirst',
+      handler: 'StaleWhileRevalidate',
       options: {
         cacheName: 'static-style-assets',
         expiration: {
@@ -188,7 +188,6 @@ const withPWA = require('next-pwa')({
     }
   ],
   fallbacks: {
-      // document: '/',
       // image: '/public/female.svg',
       // font: '/font.woff2',
       // image: '/public/male.svg',

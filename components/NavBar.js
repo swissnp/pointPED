@@ -85,6 +85,7 @@ function RecentsBox(props) {
   if (isMounted) {
     try {
       let currentCookie = cookies.recents.data;
+
       for (let i = currentCookie.length - 1; i >= 0; i--) {
         list.push(
           <tr
@@ -95,6 +96,7 @@ function RecentsBox(props) {
             <td>{currentCookie[i].weight}</td>
             <td>{currentCookie[i].height}</td>
             <td>{currentCookie[i].sex.label}</td>
+
             <td>
               {" "}
               <button
