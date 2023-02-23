@@ -157,8 +157,8 @@ export function Home() {
           <div className="flex max-h-screen items-center justify-center gap-x-6 pb-1">
             <InformationBox weight={weight} height={height} sex={sex} />
           </div>
-          <div className="max-h-full overflow-x-scroll pt-2">
-            <table className="table-zebra table-compact w-full ">
+          <div className="max-h-full pt-2">
+            <table className="table-zebra table-compact w-full table-auto">
               <thead>
                 <tr>
                   <th>

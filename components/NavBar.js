@@ -151,7 +151,7 @@ function RecentsBox(props) {
                 No recent calculations
               </div>
             ) : (
-              <table className="table-zebra table w-full">
+              <table className="table-zebra table w-full table-compact">
                 <thead>
                   <tr>
                     <th>Weight</th>

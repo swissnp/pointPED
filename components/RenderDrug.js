@@ -47,13 +47,17 @@ export default function RenderComponent(props) {
 
     list.push(
       <tr key={selectedDrug[i].value}>
-        <td>
-          {selectedDrug[i].label}{" "}
-          {isMax && <div className="badge-error badge-outline badge">max</div>}
-          {isMin && <div className="badge-info badge-outline badge">min</div>}
+        <td >
+          <div className="overflow-x-scroll">
+            {selectedDrug[i].label}{" "}
+            {isMax && (
+              <div className="badge-error badge-outline badge">max</div>
+            )}
+            {isMin && <div className="badge-info badge-outline badge">min</div>}
+          </div>
         </td>
-        <td className="z-5 flex flex-grow justify-end">
-          <div className="">
+        <td className="z-5  ">
+          <div className="flex flex-grow justify-end whitespace-nowrap">
             {+dose.toFixed(2)} {selectedDrug[i].unit}
             <MoreInfo
               selectedDrug={selectedDrug[i]}
@@ -69,9 +73,6 @@ export default function RenderComponent(props) {
   }
   return <tbody>{list}</tbody>;
 }
-
-
-
 
 function MoreInfo(props) {
   const [open, setOpen] = useState(false);
@@ -171,8 +172,18 @@ function MoreInfo(props) {
                     selectedDrug.bodyWeightType}{" "}
                   {+drugSpecificWeight.toFixed(2)} kg
                 </span>{" "}
-                = <div className={`${((isMax || isMin) & +(selectedDrug.coef * drugSpecificWeight).toFixed(2)!==selectedDrug.max) && 'line-through decoration-error decoration-2'} inline`}>{+(selectedDrug.coef * drugSpecificWeight).toFixed(2)}{" "}
-                {selectedDrug.unit}{" "}</div>
+                ={" "}
+                <div
+                  className={`${
+                    (isMax || isMin) &
+                      (+(selectedDrug.coef * drugSpecificWeight).toFixed(2) !==
+                        selectedDrug.max) &&
+                    "line-through decoration-error decoration-2"
+                  } inline`}
+                >
+                  {+(selectedDrug.coef * drugSpecificWeight).toFixed(2)}{" "}
+                  {selectedDrug.unit}{" "}
+                </div>
               </div>
             </div>
           </div>
