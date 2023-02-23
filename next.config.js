@@ -188,7 +188,6 @@ const withPWA = require('next-pwa')({
     }
   ],
   fallbacks: {
-      document: '/',
       // image: '/public/female.svg',
       // font: '/font.woff2',
       // image: '/public/male.svg',

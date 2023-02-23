@@ -8,6 +8,7 @@ import RenderComponent from "@/components/RenderDrug";
 import InformationBox from "@/components/Modal";
 import { useCookies } from "react-cookie";
 import { CookiesProvider } from "react-cookie";
+import { TrashIcon } from "@heroicons/react/24/outline";
 
 export default function Root() {
   return (
@@ -29,7 +30,7 @@ const validateWeight = (weight) => {
 
 const validateHeight = (height) => {
   if (
-    /^\d*\.?\d*$/.test(height) & (height >= 45 && height <= 120) ||
+    /^\d*\.?\d*$/.test(height) & (height >= 45 && height <= 170) ||
     height === ""
   ) {
     return true;
@@ -101,8 +102,7 @@ export function Home() {
   const calculatedWeight = useRef(0);
   const isObese = useRef(false);
   const [formError, setFormError] = useState("");
-  const [isFormError, setIsFormError] = useState(false);
-  const [cookies, setCookies, removeCookies] = useCookies(["recents"]);
+  const [cookies, setCookies] = useCookies(["recents"]);
   const [changeFromRecents, setChangeFromRecents] = useState(false);
 
   isWeightValid.current = validateWeight(weight);
@@ -130,7 +130,7 @@ export function Home() {
         <link
           rel="manifest"
           href="/manifest.webmanifest"
-          crossorigin="use-credentials"
+          crossOrigin="use-credentials"
         />
         <link rel="apple-touch-icon" href="icons/apple-icon-180.png" />
         <meta name="theme-color" content="#ffffff" />
@@ -140,6 +140,7 @@ export function Home() {
         id="my-modal-3"
         className={"modal-toggle"}
         checked={isModalOpen}
+        onChange={() => {}} // This is to prevent error
       />
 
       <div className="modal text-base-content">
@@ -190,17 +191,17 @@ export function Home() {
             setSex={setSex}
             setChangeFromRecents={setChangeFromRecents}
           />
-          <div className="mx-3 my-5">
-            <div className="container mx-auto max-w-screen-md rounded-2xl bg-base-100 px-6 py-5 text-base-content drop-shadow-md">
+          <div className="z-0 mx-3 my-5">
+            <div className=" container relative top-16 mx-auto max-w-screen-sm rounded-2xl bg-base-100 px-6 py-5 text-base-content drop-shadow-md">
               <div className=" prose-lg  whitespace-nowrap p-3 text-center font-bold text-base-content ">
-                  <h1 className="text-primary inline">.</h1>
-                  <h1  className="inline">PED</h1>
+                <h1 className="inline text-primary">.</h1>
+                <h1 className="inline">PED</h1>
               </div>
               <p className="text-center text-error">
-                demo version don't use in real setting
-              </p>
-              {isFormError && (
-                <div className="alert alert-error shadow-lg">
+                demo version don't use in real setting.
+              </p> 
+              {formError && (
+                <div className="alert alert-error my-2 py-4">
                   <div>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -216,6 +217,28 @@ export function Home() {
                       />
                     </svg>
                     <span>{formError}</span>
+                  </div>
+                </div>
+              )}
+              {(changeFromRecents) && (
+                <div className="alert my-2 py-4">
+                  <div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      className="h-6 w-6 flex-shrink-0 stroke-info"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      ></path>
+                    </svg>
+                    <span>
+                      Weight, Height and Sex are filled with recents.{" "}
+                    </span>
                   </div>
                 </div>
               )}
@@ -270,7 +293,7 @@ export function Home() {
                 </label>
                 <input
                   type="number"
-                  placeholder="range 45-120"
+                  placeholder="range 45-170"
                   step=".01" // allow decimal
                   value={height}
                   className={`input-bordered input w-full 
@@ -289,21 +312,35 @@ export function Home() {
               </div>
               <label className="label">
                 <span className="label-text">
-                  Select Sex<span className="text-error"> *</span>
+                  Sex<span className="text-error"> *</span>
                 </span>
               </label>
               <SexSelectBox
                 onChange={(e) => setSex(e)}
                 value={sex}
                 classNames={`${changeFromRecents && "outline-blue"}`}
+                changeFromRecents={changeFromRecents}
               />
               <div
-                className={`flex items-center justify-center gap-x-6 py-2 pt-3 `}
+                className={`flex items-center justify-center gap-x-6 pt-5 `}
               >
                 <label
                   onClick={(event) => {
-                    setIsFormError(false);
                     setFormError("");
+                    setWeight("");
+                    setHeight("");
+                    setSex("");
+                    setSelectedDrug([]);
+                    setChangeFromRecents(false);
+                  }}
+                  className={`btn-outline btn-error btn  absolute left-6 `}
+                >
+                  <TrashIcon className="h-6 w-6" />
+                </label>
+                <label
+                  onClick={(event) => {
+                    setFormError("");
+                    setChangeFromRecents(false)
                     try {
                       setIsModalOpen(
                         validateForm(weight, height, sex, selectedDrug)
@@ -311,8 +348,8 @@ export function Home() {
                       handleCookies(weight, height, sex, setCookies, cookies);
                     } catch (e) {
                       console.error(e);
-                      setIsFormError(true);
                       setFormError(e);
+                      setChangeFromRecents(false)
                     }
 
                     console.log(weight, height, sex);
