@@ -1,6 +1,6 @@
 export default function InformationBox(props) {
-  const weight = props.weight;
-  const height = props.height;
+  const weight = +parseFloat(props.weight).toFixed(2);
+  const height = +parseFloat(props.height).toFixed(2);
   const sex = props.sex;
   const max = Math.max(weight.toString().length, height.toString().length)
   return (
@@ -11,8 +11,8 @@ export default function InformationBox(props) {
           {weight === "" || weight === 0 ? (
             <div className="stat-value text-error">{"-"}</div>
           ) : (
-            <div className={`stat-value text-ellipsis whitespace-nowrap ${max == 1 && 'text-7xl'} ${max == 2 && 'text-6xl'} ${max == 3 && 'text-5xl'} ${max == 4 && 'text-4xl'} ${max == 5 && 'text-3xl'} ${max == 6 && 'text-2xl'} ${max == 7 && 'text-xl'}`}>
-              {weight}
+            <div className={`stat-value text-ellipsis whitespace-nowrap ${max <= 4 ? 'text-3xl' : 'text-2xl'} `}>
+              {weight} 
             </div>
           )}
         </div>
@@ -24,7 +24,7 @@ export default function InformationBox(props) {
           {height === "" || height === 0 ? (
             <div className="stat-value text-error">{"-"}</div>
           ) : (
-            <div className={`stat-value text-ellipsis whitespace-nowrap ${max == 1 && 'text-7xl'} ${max == 2 && 'text-6xl'} ${max == 3 && 'text-5xl'} ${max == 4 && 'text-4xl'} ${max == 5 && 'text-3xl'} ${max == 6 && 'text-2xl'} ${max == 7 && 'text-xl'}`}>
+            <div className={`stat-value text-ellipsis whitespace-nowrap ${max <= 4 ? 'text-3xl' : 'text-2xl'}`}>
               {height}
             </div>
           )}
