@@ -157,16 +157,16 @@ export function Home() {
           <div className="flex max-h-screen items-center justify-center gap-x-6 pb-1">
             <InformationBox weight={weight} height={height} sex={sex} />
           </div>
-          <div className="max-h-full pt-2">
+          <div className="max-h-full overflow-x-scroll pt-2">
             <table className="table-zebra table-compact w-full table-auto">
               <thead>
                 <tr>
                   <th>
                     Drugs{" "}
                     {isObese.current ? (
-                      <div className="badge badge-error ml-1 gap-1">Obese</div>
+                      <div className="badge-error badge ml-1 gap-1">Obese</div>
                     ) : (
-                      <div className="badge badge-success ml-1 gap-1">
+                      <div className="badge-success badge ml-1 gap-1">
                         Not Obese
                       </div>
                     )}
@@ -182,8 +182,7 @@ export function Home() {
           </div>
         </div>
       </div>
-      <main>
-        <div className="min-h-screen overflow-auto bg-base-200">
+      <main className="bg-base-200 min-h-screen">
           <NavBar
             cookies={cookies}
             setWeight={setWeight}
@@ -192,14 +191,14 @@ export function Home() {
             setChangeFromRecents={setChangeFromRecents}
           />
           <div className="z-0 mx-3 my-5">
-            <div className=" container relative top-16 mx-auto max-w-screen-sm rounded-2xl bg-base-100 px-6 py-5 text-base-content drop-shadow-md">
-              <div className=" prose-lg  whitespace-nowrap p-3 text-center font-bold text-base-content ">
+            <div className="container relative top-16 mx-auto max-w-screen-sm rounded-2xl bg-base-100 px-6 py-5 text-base-content drop-shadow-md">
+              <div className="prose-lg whitespace-nowrap p-3 text-center font-bold text-base-content ">
                 <h1 className="inline text-primary">.</h1>
                 <h1 className="inline">PED</h1>
               </div>
               <p className="text-center text-error">
                 demo version don't use in real setting.
-              </p> 
+              </p>
               {formError && (
                 <div className="alert alert-error my-2 py-4">
                   <div>
@@ -220,7 +219,7 @@ export function Home() {
                   </div>
                 </div>
               )}
-              {(changeFromRecents) && (
+              {changeFromRecents && (
                 <div className="alert my-2 py-4">
                   <div>
                     <svg
@@ -303,14 +302,14 @@ export function Home() {
                   pattern="^\d*(\.\d{0,2})?$"
                   inputMode="decimal"
                   onChange={(e) => {
-                    setHeight((height) =>{
-                      if (e.target.validity.valid){
-                        return e.target.value
-                      }else{
-                        console.log('invalid')
-                        return height
+                    setHeight((height) => {
+                      if (e.target.validity.valid) {
+                        return e.target.value;
+                      } else {
+                        console.log("invalid");
+                        return height;
                       }
-                  });
+                    });
                     setChangeFromRecents(false);
                   }}
                 />
@@ -326,9 +325,7 @@ export function Home() {
                 classNames={`${changeFromRecents && "outline-blue"}`}
                 changeFromRecents={changeFromRecents}
               />
-              <div
-                className={`flex items-center justify-center gap-x-6 pt-5 `}
-              >
+              <div className={`flex items-center justify-center gap-x-6 pt-5 `}>
                 <label
                   onClick={(event) => {
                     setFormError("");
@@ -345,7 +342,7 @@ export function Home() {
                 <label
                   onClick={(event) => {
                     setFormError("");
-                    setChangeFromRecents(false)
+                    setChangeFromRecents(false);
                     try {
                       setIsModalOpen(
                         validateForm(weight, height, sex, selectedDrug)
@@ -354,7 +351,7 @@ export function Home() {
                     } catch (e) {
                       console.error(e);
                       setFormError(e);
-                      setChangeFromRecents(false)
+                      setChangeFromRecents(false);
                     }
 
                     console.log(weight, height, sex);
@@ -369,7 +366,6 @@ export function Home() {
               </div>
             </div>
           </div>
-        </div>
       </main>
     </>
   );

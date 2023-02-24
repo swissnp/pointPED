@@ -191,8 +191,8 @@ const withPWA = require('next-pwa')({
   fallbacks: {
       
       // font: '/font.woff2',
-      image: '/public/female.svg',
-      image: '/public/male.svg',
+      image: '/female.svg',
+      image: '/male.svg',
       // document: '/public/manifest.webmanifest',
       // image: '/public/favicon.ico'
       // document: '/other-offline',  // if you want to fallback to a custom    page other than /_offline

@@ -2,6 +2,7 @@ export default function InformationBox(props) {
   const weight = props.weight;
   const height = props.height;
   const sex = props.sex;
+  const max = Math.max(weight.toString().length, height.toString().length)
   return (
     <div className="stats max-w-full shadow">
       <div className="stat place-items-center">
@@ -10,7 +11,7 @@ export default function InformationBox(props) {
           {weight === "" || weight === 0 ? (
             <div className="stat-value text-error">{"-"}</div>
           ) : (
-            <div className="stat-value text-ellipsis whitespace-nowrap text-2xl">
+            <div className={`stat-value text-ellipsis whitespace-nowrap text-${8-max}xl`}>
               {weight}
             </div>
           )}
@@ -23,7 +24,7 @@ export default function InformationBox(props) {
           {height === "" || height === 0 ? (
             <div className="stat-value text-error">{"-"}</div>
           ) : (
-            <div className="stat-value text-ellipsis whitespace-nowrap text-2xl">
+            <div className={`stat-value text-ellipsis whitespace-nowrap text-${8-max}xl`}>
               {height}
             </div>
           )}
