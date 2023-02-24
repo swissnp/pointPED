@@ -195,7 +195,7 @@ const withPWA = require('next-pwa')({
       image: '/male.svg',
       // document: '/public/manifest.webmanifest',
       // image: '/public/favicon.ico'
-      // document: '/other-offline',  // if you want to fallback to a custom    page other than /_offline
+      document: '/',  // if you want to fallback to a custom    page other than /_offline
     },
 })
 module.exports = withPWA({
