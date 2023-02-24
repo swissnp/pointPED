@@ -116,7 +116,7 @@ const createGroup = (groupName, options, setValue) => {
     label: (() => {
       return (
         <div
-          className={`!text_black select__option !text-black select__option css-10wo9uf-option `}
+          className={`!text_black select__option !text-black select__option css-10wo9uf-option hover:bg-slate-400 focus:bg-slate-400`}
           onClick={() =>
             setValue(value =>
               value.concat(options.filter(grpOpt => !value.includes(grpOpt)))
