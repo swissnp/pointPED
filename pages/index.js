@@ -182,7 +182,7 @@ export function Home() {
           </div>
         </div>
       </div>
-      <main className="bg-base-200 min-h-screen">
+      <main className="bg-base-200 min-h-screen pb-20">
           <NavBar
             cookies={cookies}
             setWeight={setWeight}
@@ -190,8 +190,8 @@ export function Home() {
             setSex={setSex}
             setChangeFromRecents={setChangeFromRecents}
           />
-          <div className="z-0 mx-3 my-5">
-            <div className="container relative top-16 mx-auto max-w-screen-sm rounded-2xl bg-base-100 px-6 py-5 text-base-content drop-shadow-md">
+          <div className="mx-3">
+            <div className="z-0 my-5 container relative top-16 mx-auto max-w-screen-sm rounded-2xl bg-base-100 px-6 py-5 text-base-content drop-shadow-md">
               <div className="prose-lg whitespace-nowrap p-3 text-center font-bold text-base-content ">
                 <h1 className="inline text-primary">.</h1>
                 <h1 className="inline">PED</h1>
