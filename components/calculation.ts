@@ -1,6 +1,6 @@
-import { dataBoy, dataGirl } from "./data";
-export function getP50weight(height, sex) {
-  let heightFloat = parseFloat(height);
+import { dataBoy, dataGirl } from "./growthData";
+export function getP50weight(height: number, sex: "Male" | "Female"): number {
+  let heightFloat = parseFloat(height.toString());
   try {
     if (sex === "Male") {
       let payload = dataBoy[heightFloat];
@@ -22,15 +22,16 @@ export function getP50weight(height, sex) {
     }
   } catch (e) {
     console.error(e);
+    return NaN;
   }
 }
 
-export function adjustedWeight(weight, height, sex) {
+export function adjustedWeight(weight: number, height: number, sex: "Male" | "Female"): number {
   let P50weight = getP50weight(height,sex);
   return (P50weight + 0.35*(weight - P50weight));
 }
 
-function estimateDecimalHeight(height, data) {
+function estimateDecimalHeight(height: number, data: { [key: number]: number }): number {
   let ceil = data[Math.ceil(height * 2) / 2];
   let floor = data[Math.floor(height * 2) / 2];
   let dif = height - Math.floor(height * 2) / 2;
@@ -42,7 +43,11 @@ function estimateDecimalHeight(height, data) {
   }
 }
 
-export const calculateWeight = (weight, height, s) => {
+export const calculateWeight = (
+  weight: string,
+  height: string,
+  s: "Male" | "Female"
+): number | number[] => {
   let w = parseFloat(weight);
   let h = parseFloat(height);
   try {
@@ -66,5 +71,6 @@ export const calculateWeight = (weight, height, s) => {
     }
   } catch (e) {
     console.error(e);
+    return NaN;
   }
 };

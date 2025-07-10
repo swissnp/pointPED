@@ -198,6 +198,4 @@ const withPWA = require('next-pwa')({
       document: '/',  // if you want to fallback to a custom    page other than /_offline
     },
 })
-module.exports = withPWA({
-  nextConfig
-})
+module.exports = withPWA(nextConfig)
